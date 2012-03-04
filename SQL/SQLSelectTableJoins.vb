@@ -118,4 +118,24 @@ Public Class SQLSelectTableJoins
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("TableJoins")>
+    Public Sub CreateSingleTableJoinAndSQLFunction()
+
+        SQLStatement.DefaultConnectionType = Database.ConnectionType.SQLServer
+
+        Dim table1 As New SQLSelectTable("Table1")
+        Dim table2 As New SQLSelectTable("Table2")
+
+        Dim selectStatement As New SQLSelect()
+        selectStatement.Tables.Add(table1)
+
+        Dim table1Table2Join = selectStatement.Tables.Joins.Add(table1, SQLSelectTableJoin.Type.Inner, table2)
+        table1Table2Join.Where.Add("Table1Key", SQL.ComparisonOperator.EqualTo, "Table2Key")
+        table1Table2Join.Where.Add(New SQLFunctionExpression("IS_MEMBER", New SQLValueExpression("domain\username")), ComparisonOperator.GreaterThan, New SQLValueExpression(0))
+
+        Assert.AreEqual(Of String)("SELECT * FROM ([Table1] INNER JOIN [Table2] ON [Table1].[Table1Key] = [Table2].[Table2Key] AND IS_MEMBER('domain\username') > 0)", selectStatement.SQL)
+
+    End Sub
+
 End Class

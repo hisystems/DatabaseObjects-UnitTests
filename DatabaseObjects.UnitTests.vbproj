@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Misc\AssemblyInfo.vb" />
     <Compile Include="SQL\SQLBitwiseExpressionTest.vb" />
+    <Compile Include="SQL\SQLFunctionExpression.vb" />
     <Compile Include="SQL\SQLSelectTableJoins.vb" />
   </ItemGroup>
   <ItemGroup>
