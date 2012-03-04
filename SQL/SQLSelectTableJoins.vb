@@ -120,6 +120,42 @@ Public Class SQLSelectTableJoins
 
     <TestMethod()>
     <TestCategory("SQL"), TestCategory("TableJoins")>
+    Public Sub TableJoinsWithOrderOfOperators()
+
+        SQLStatement.DefaultConnectionType = Database.ConnectionType.SQLServer
+
+        Dim table1 As New SQLSelectTable("Table1")
+        Dim table2 As New SQLSelectTable("Table2")
+
+        Dim selectStatement As New SQLSelect()
+        selectStatement.Tables.Add(table1)
+
+        Dim innerCondition As New SQL.SQLSelectTableJoinConditions
+        innerCondition.Add(New SQLFieldExpression("Field1"), ComparisonOperator.EqualTo, New SQLValueExpression(1))
+        innerCondition.AddLogicalOperator(LogicalOperator.Or)
+        innerCondition.Add(New SQLFieldExpression("Field2"), ComparisonOperator.EqualTo, New SQLValueExpression(2))
+
+        Dim table1Table2Join = selectStatement.Tables.Joins.Add(table1, SQLSelectTableJoin.Type.Inner, table2)
+        table1Table2Join.Where.Add("Table1Key", SQL.ComparisonOperator.EqualTo, "Table2Key")
+        table1Table2Join.Where.Add(innerCondition)
+
+        Assert.AreEqual(Of String)("SELECT * FROM ([Table1] INNER JOIN [Table2] ON [Table1].[Table1Key] = [Table2].[Table2Key] AND ([Field1] = 1 OR [Field2] = 2))", selectStatement.SQL)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("TableJoins")>
+    <ExpectedException(GetType(InvalidOperationException))>
+    Public Sub SQLSelectTableJoinConditionsInstanceWithFieldsInsteadOfExpressions()
+
+        Dim innerCondition As New SQL.SQLSelectTableJoinConditions
+        'This is only support for backward compatibility - should use SQLExpression subclasses instead
+        innerCondition.Add("Field1", ComparisonOperator.EqualTo, "Field2")
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("TableJoins")>
     Public Sub CreateSingleTableJoinAndSQLFunction()
 
         SQLStatement.DefaultConnectionType = Database.ConnectionType.SQLServer
