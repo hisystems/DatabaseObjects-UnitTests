@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Misc\AssemblyInfo.vb" />
+    <Compile Include="SQL\SQLBitwiseExpressionTest.vb" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatabaseObjects\DatabaseObjects.vbproj">
@@ -85,7 +86,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
-    <Folder Include="SQL\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
