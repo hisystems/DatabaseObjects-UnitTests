@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Misc\AssemblyInfo.vb" />
+    <Compile Include="SQL\SQLLengthFunctionExpressionTest.vb" />
     <Compile Include="SQL\SQLViewExistsTest.vb" />
     <Compile Include="SQL\SQLDropViewTest.vb" />
     <Compile Include="SQL\SQLCreateViewTest.vb" />
