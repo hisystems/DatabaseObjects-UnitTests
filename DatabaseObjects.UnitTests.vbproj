@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Misc\AssemblyInfo.vb" />
+    <Compile Include="SQL\SQLTableTest.vb" />
     <Compile Include="SQL\SQLRightFunctionExpressionTest.vb" />
     <Compile Include="SQL\SQLCaseExpressionTest.vb" />
     <Compile Include="SQL\SQLConditionExpressionTest.vb" />
