@@ -76,6 +76,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constraints\ConstraintTests.vb" />
     <Compile Include="Misc\AssemblyInfo.vb" />
     <Compile Include="DatabaseTests.vb" />
     <Compile Include="SQL\SQLTableTest.vb" />
