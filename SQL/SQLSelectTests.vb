@@ -33,4 +33,26 @@ Public Class SQLSelectTests
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("SQLSelect")>
+    Public Sub SelectTableParentProperty()
+
+        Dim selectStatement As New SQLSelect
+
+        Assert.AreSame(selectStatement, selectStatement.Tables.Parent)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("SQLSelect")>
+    Public Sub SelectTableParentPropertyForNewTablesObject()
+
+        Dim newTablesCollection = New SQLSelectTables
+        Dim selectStatement As New SQLSelect
+        selectStatement.Tables = newTablesCollection
+
+        Assert.AreSame(selectStatement, selectStatement.Tables.Parent)
+
+    End Sub
+
 End Class
