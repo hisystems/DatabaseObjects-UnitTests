@@ -1,4 +1,7 @@
-﻿Imports System.Text
+﻿Option Strict On
+Option Explicit On
+
+Imports System.Text
 
 <TestClass()>
 Public Class ConstraintTests
@@ -107,6 +110,26 @@ Public Class ConstraintTests
 
         Dim constraint As New Constraints.RegExConstraint("[a-c]{3}")
         Assert.IsFalse(DirectCast(constraint, Constraints.IConstraint(Of String)).ValueSatisfiesConstraint("123"))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Constraint")>
+    Public Sub Constraint()
+
+        Dim constraint As New Constraints.Constraint(Of Integer)(Function(input) input > 0)
+
+        Assert.IsTrue(DirectCast(constraint, Constraints.IConstraint(Of Integer)).ValueSatisfiesConstraint(1))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Constraint")>
+    Public Sub ConstraintDoesNotMatch()
+
+        Dim constraint As New Constraints.Constraint(Of Integer)(Function(input) input > 0)
+
+        Assert.IsFalse(DirectCast(constraint, Constraints.IConstraint(Of Integer)).ValueSatisfiesConstraint(-1))
 
     End Sub
 
