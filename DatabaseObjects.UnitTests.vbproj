@@ -81,6 +81,8 @@
     <Compile Include="Library\SimpleTable.vb" />
     <Compile Include="Misc\AssemblyInfo.vb" />
     <Compile Include="DatabaseTests.vb" />
+    <Compile Include="SQL\SQLSelectTests.vb" />
+    <Compile Include="SQL\SQLAllFieldsExpressionTests.vb" />
     <Compile Include="SQL\SQLTableTest.vb" />
     <Compile Include="SQL\SQLRightFunctionExpressionTest.vb" />
     <Compile Include="SQL\SQLCaseExpressionTest.vb" />
