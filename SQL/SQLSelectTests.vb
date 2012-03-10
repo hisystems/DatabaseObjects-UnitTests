@@ -16,7 +16,7 @@ Public Class SQLSelectTests
     End Sub
 
     <TestMethod()>
-    <TestCategory("SQL"), TestCategory("SQLExpression")>
+    <TestCategory("SQL"), TestCategory("SQLSelect")>
     Public Sub SelectWithTableJoin()
 
         Dim table1 As New SQLSelectTable("Table1")
