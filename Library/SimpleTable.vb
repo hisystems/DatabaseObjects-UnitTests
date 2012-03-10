@@ -16,6 +16,14 @@ Public Class SimpleTable
 
     End Sub
 
+    Default Public ReadOnly Property Item(ByVal field1KeyField As String) As SimpleTableItem
+        Get
+
+            Return MyBase.ObjectByKey(field1KeyField)
+
+        End Get
+    End Property
+
     Friend Shared Function TableSchema() As SQLCreateTable
 
         Dim createTable As New SQLCreateTable
