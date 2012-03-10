@@ -7,6 +7,7 @@ Public Class DatabaseTests
 
     <Table("Table1")>
     <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
+    <KeyField("Field1")>
     <ItemInstance(GetType(Table1Item))>
     Private Class Table1Collection
         Inherits Generic.DatabaseObjectsListUsingAttributes(Of Table1Item)
@@ -56,6 +57,8 @@ Public Class DatabaseTests
 
     End Class
 
+    Public Property TestContext As TestContext
+
     Private Shared database As Database
     Private Shared table1 As Table1Collection
 
@@ -70,6 +73,11 @@ Public Class DatabaseTests
     <TestInitialize()>
     Public Sub InitializeTable1WithAutoIncrementPrimaryKeyAndField1()
 
+        AddHandler database.Connection.StatementExecuted, _
+            Sub(statement As ISQLStatement)
+                TestContext.WriteLine(statement.SQL)
+            End Sub
+
         database.Connection.Start()
 
         If database.Connection.Execute(New SQLTableExists("Table1")).Read Then
@@ -79,14 +87,17 @@ Public Class DatabaseTests
         database.Connection.Execute(Table1Collection.TableSchema)
 
         With table1.Add
+            .Field1 = "Field1-1"
             .Save()
         End With
 
         With table1.Add
+            .Field1 = "Field1-2"
             .Save()
         End With
 
         With table1.Add
+            .Field1 = "Field1-3"
             .Save()
         End With
 
@@ -107,6 +118,22 @@ Public Class DatabaseTests
     Public Sub ObjectByDistinctValueDoesNotExist()
 
         Assert.IsFalse(database.ObjectExistsByDistinctValue(table1, 4))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectExists()
+
+        Assert.IsTrue(database.ObjectExists(table1, "Field1-1"))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectExistsWhenItDoesNotExist()
+
+        Assert.IsFalse(database.ObjectExists(table1, "Field1-9999999999999"))
 
     End Sub
 
