@@ -5,68 +5,16 @@ Imports DatabaseObjects.SQL
 <TestClass()>
 Public Class DatabaseTests
 
-    <Table("Table1")>
-    <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
-    <KeyField("Field1")>
-    <ItemInstance(GetType(Table1Item))>
-    Private Class Table1Collection
-        Inherits Generic.DatabaseObjectsListUsingAttributes(Of Table1Item)
-
-        Friend Sub New(database As Database)
-
-            MyBase.New(database)
-
-        End Sub
-
-        Friend Shared Function TableSchema() As SQLCreateTable
-
-            Dim createTable As New SQLCreateTable
-
-            createTable.Name = "Table1"
-
-            With createTable.Fields.Add("PrimaryField", DataType.Integer)
-                .KeyType = KeyType.Primary
-                .AutoIncrements = True
-            End With
-
-            createTable.Fields.Add("Field1", DataType.VariableCharacter, 100)
-
-            Return createTable
-
-        End Function
-
-    End Class
-
-    Private Class Table1Item
-        Inherits DatabaseObjectUsingAttributes
-
-        <FieldMapping("Field1")>
-        Public Field1 As String
-
-        Friend Sub New(parent As Table1Collection)
-
-            MyBase.New(parent)
-
-        End Sub
-
-        Public Shadows Sub Save()
-
-            MyBase.Save()
-
-        End Sub
-
-    End Class
-
     Public Property TestContext As TestContext
 
     Private Shared database As Database
-    Private Shared table1 As Table1Collection
+    Private Shared table As SimpleTable
 
     <ClassInitialize()>
     Public Shared Sub ClassInitialize(context As TestContext)
 
         database = New Database(ConfigurationManager.ConnectionStrings("SQLServerTestDatabase").ConnectionString, database.ConnectionType.SQLServer)
-        table1 = New Table1Collection(database)
+        table = New SimpleTable(database)
 
     End Sub
 
@@ -80,23 +28,23 @@ Public Class DatabaseTests
 
         database.Connection.Start()
 
-        If database.Connection.Execute(New SQLTableExists("Table1")).Read Then
-            database.Connection.Execute(New SQLDropTable("Table1"))
+        If database.Connection.Execute(New SQLTableExists(SimpleTable.Name)).Read Then
+            database.Connection.Execute(New SQLDropTable(SimpleTable.Name))
         End If
 
-        database.Connection.Execute(Table1Collection.TableSchema)
+        database.Connection.Execute(SimpleTable.TableSchema)
 
-        With table1.Add
+        With table.Add
             .Field1 = "Field1-1"
             .Save()
         End With
 
-        With table1.Add
+        With table.Add
             .Field1 = "Field1-2"
             .Save()
         End With
 
-        With table1.Add
+        With table.Add
             .Field1 = "Field1-3"
             .Save()
         End With
@@ -109,7 +57,7 @@ Public Class DatabaseTests
     <TestCategory("Database")>
     Public Sub ObjectByDistinctValueExists()
 
-        Assert.IsTrue(database.ObjectExistsByDistinctValue(table1, 2))
+        Assert.IsTrue(database.ObjectExistsByDistinctValue(table, 2))
 
     End Sub
 
@@ -117,7 +65,7 @@ Public Class DatabaseTests
     <TestCategory("Database")>
     Public Sub ObjectByDistinctValueDoesNotExist()
 
-        Assert.IsFalse(database.ObjectExistsByDistinctValue(table1, 4))
+        Assert.IsFalse(database.ObjectExistsByDistinctValue(table, 4))
 
     End Sub
 
@@ -125,7 +73,7 @@ Public Class DatabaseTests
     <TestCategory("Database")>
     Public Sub ObjectExists()
 
-        Assert.IsTrue(database.ObjectExists(table1, "Field1-1"))
+        Assert.IsTrue(database.ObjectExists(table, "Field1-1"))
 
     End Sub
 
@@ -133,7 +81,7 @@ Public Class DatabaseTests
     <TestCategory("Database")>
     Public Sub ObjectExistsWhenItDoesNotExist()
 
-        Assert.IsFalse(database.ObjectExists(table1, "Field1-9999999999999"))
+        Assert.IsFalse(database.ObjectExists(table, "Field1-9999999999999"))
 
     End Sub
 
