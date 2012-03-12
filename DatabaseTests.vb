@@ -1,6 +1,7 @@
 ﻿Imports System.Text
 Imports System.Configuration
 Imports DatabaseObjects.SQL
+Imports DatabaseObjects.Exceptions
 
 <TestClass()>
 Public Class DatabaseTests
@@ -82,6 +83,81 @@ Public Class DatabaseTests
     Public Sub ObjectExistsWhenItDoesNotExist()
 
         Assert.IsFalse(database.ObjectExists(table, "Field1-9999999999999"))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection")>
+    Public Sub ConnectionScopeExecute()
+
+        Using connection = New ConnectionScope(database)
+            Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection")>
+    Public Sub ConnectionScopeExecuteScalar()
+
+        Using connection = New ConnectionScope(database)
+            Assert.AreNotEqual(connection.ExecuteScalar(New SQLSelect(SimpleTable.Name)), DBNull.Value)
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection")>
+    Public Sub ConnectionScopeExecuteNonQuery()
+
+        Using connection = New ConnectionScope(database)
+            With table.Add
+                .Field1 = "abc"
+                .Save()
+            End With
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection")>
+    <ExpectedException(GetType(DatabaseObjectsException))>
+    Public Sub ConnectionScopeExecuteAfterDispose()
+
+        Dim connection As New ConnectionScope(database)
+
+        Using connection
+            'Will close the connection here...
+        End Using
+
+        Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection")>
+    Public Sub ConnectionScopeInsideTransactionScope()
+
+        Using transaction = New System.Transactions.TransactionScope
+            Using connection = New ConnectionScope(database)
+                Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
+            End Using
+            transaction.Complete()
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection")>
+    Public Sub ConnectionScopeOutsideTransactionScope()
+
+        Using connection = New ConnectionScope(database)
+            Using transaction = New System.Transactions.TransactionScope
+                Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
+                transaction.Complete()
+            End Using
+            Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
+        End Using
 
     End Sub
 
