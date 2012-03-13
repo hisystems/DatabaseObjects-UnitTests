@@ -4,6 +4,7 @@ Imports DatabaseObjects.SQL
 <Table(SimpleTable.Name)>
 <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
 <KeyField("Field1")>
+<OrderByField("Field1")>
 <ItemInstance(GetType(SimpleTableItem))>
 Public Class SimpleTable
     Inherits Generic.DatabaseObjectsListUsingAttributes(Of SimpleTableItem)

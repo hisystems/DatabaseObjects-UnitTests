@@ -161,4 +161,153 @@ Public Class DatabaseTests
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectIfExists()
+
+        Assert.AreNotSame(database.ObjectIfExists(table, 1), Nothing)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectExistsByDistinctValue()
+
+        Assert.IsTrue(database.ObjectExistsByDistinctValue(table, 1))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectSaveNew()
+
+        Dim newObject = table.Add
+        newObject.Field1 = "Field1-NEW"
+
+        database.ObjectSave(table, newObject)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectSaveExisting()
+
+        Dim existingObject = table("Field1-1")
+        existingObject.Field1 = "Field1-1-Amended"
+
+        database.ObjectSave(table, existingObject)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectByKeyIfExists()
+
+        Assert.AreNotSame(database.ObjectByKeyIfExists(table, "Field1-1"), Nothing)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectByOrdinalFirst()
+
+        Dim firstObject As SimpleTableItem = database.ObjectByOrdinalFirst(table)
+
+        Assert.AreEqual(firstObject.Field1, "Field1-1")
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectByOrdinalLast()
+
+        Dim lastObject As SimpleTableItem = database.ObjectByOrdinalLast(table)
+
+        Assert.AreEqual(lastObject.Field1, "Field1-3")
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectsCount()
+
+        Assert.AreEqual(database.ObjectsCount(table), 3)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectDelete()
+
+        database.ObjectDelete(table, table("Field1-1"))
+
+        Assert.AreEqual(database.ObjectsCount(table), 2)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectsDeleteAll()
+
+        database.ObjectsDeleteAll(table)
+
+        Assert.AreEqual(database.ObjectsCount(table), 0)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectsList()
+
+        Dim items = database.ObjectsList(table)
+
+        Assert.AreEqual(items.Count, 3)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectsSearch()
+
+        Dim conditions As New SQLConditions()
+        conditions.Add("Field1", ComparisonOperator.EqualTo, "Field1-1")
+
+        Dim items = database.ObjectsSearch(table, conditions)
+
+        Assert.AreEqual(items.Count, 1)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectGetFieldValue()
+
+        Dim item2 = table("Field1-2")
+
+        Assert.AreEqual(item2.Field1, database.ObjectGetFieldValue(item2, "Field1"))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectSetFieldValue()
+
+        Dim item2 = table("Field1-2")
+        database.ObjectSetFieldValue(item2, "Field1", "Field1-2-NEW")
+
+        Assert.AreEqual("Field1-2-NEW", database.ObjectGetFieldValue(item2, "Field1"))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
+    Public Sub ObjectsDictionary()
+
+        Dim items = database.ObjectsDictionary(table)
+
+        Assert.AreEqual(items.Count, 3)
+        Assert.AreEqual(DirectCast(items("Field1-2"), SimpleTableItem).Field1, "Field1-2")
+
+    End Sub
+
 End Class
