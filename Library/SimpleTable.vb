@@ -7,7 +7,7 @@ Imports DatabaseObjects.SQL
 <OrderByField("Field1")>
 <ItemInstance(GetType(SimpleTableItem))>
 Public Class SimpleTable
-    Inherits Generic.DatabaseObjectsListUsingAttributes(Of SimpleTableItem)
+    Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListUsingAttributes(Of SimpleTableItem)
 
     Public Const Name As String = "SimpleTable"
 
