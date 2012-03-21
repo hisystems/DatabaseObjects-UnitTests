@@ -544,4 +544,14 @@ Public Class DatabaseObjectsTests
 
     'End Sub
 
+    <TestMethod()>
+    <TestCategory("DatabaseObjectsCollections")>
+    <ExpectedException(GetType(NotSupportedException))>
+    Public Sub SimpleDatabaseObjectsMultipleSubClassUsingAttributesItemInstanceFailure()
+
+        Dim collection As New Generic.SimpleDatabaseObjectsMultipleSubclassUsingAttributes(_database)
+        Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
+
+    End Sub
+
 End Class
