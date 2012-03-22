@@ -55,4 +55,35 @@ Public Class SQLSelectTests
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("SQLSelect")>
+    Public Sub SelectTableWithSchemaName()
+
+        Dim table1 As New SQLSelectTable("Table1")
+        table1.SchemaName = "dbo"
+
+        Dim selectStatement As New SQLSelect
+        selectStatement.ConnectionType = Database.ConnectionType.SQLServer
+        selectStatement.Tables.Add(table1)
+
+        Assert.AreEqual("SELECT * FROM [dbo].[Table1]", selectStatement.SQL)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("SQLSelect")>
+    Public Sub SelectTableWithDatabaseAndSchemaName()
+
+        Dim table1 As New SQLSelectTable("Table1")
+        table1.SchemaName = "dbo"
+        table1.DatabaseName = "database"
+
+        Dim selectStatement As New SQLSelect
+        selectStatement.ConnectionType = Database.ConnectionType.SQLServer
+        selectStatement.Tables.Add(table1)
+
+        Assert.AreEqual("SELECT * FROM [database].[dbo].[Table1]", selectStatement.SQL)
+
+    End Sub
+
 End Class
