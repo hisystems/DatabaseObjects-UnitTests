@@ -14,7 +14,7 @@ Public Class DatabaseTests
     <ClassInitialize()>
     Public Shared Sub ClassInitialize(context As TestContext)
 
-        database = New Database(ConfigurationManager.ConnectionStrings("SQLServerTestDatabase").ConnectionString, database.ConnectionType.SQLServer)
+        database = MicrosoftSQLServerDatabase.Parse(ConfigurationManager.ConnectionStrings("SQLServerTestDatabase").ConnectionString)
         table = New SimpleTable(database)
 
     End Sub

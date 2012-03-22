@@ -14,7 +14,7 @@ Public Class DatabaseObjectsTests
     <ClassInitialize()>
     Public Shared Sub ClassInitialize(context As TestContext)
 
-        _database = New Database(ConfigurationManager.ConnectionStrings("SQLServerTestDatabase").ConnectionString, Database.ConnectionType.SQLServer)
+        _database = MicrosoftSQLServerDatabase.Parse(ConfigurationManager.ConnectionStrings("SQLServerTestDatabase").ConnectionString)
         _rootContainer = New TestRootContainer(_database)
 
     End Sub
