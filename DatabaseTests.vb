@@ -136,6 +136,18 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database"), TestCategory("Connection")>
+    Public Sub ConnectionScopeDisposeTwice()
+
+        Using connection As New ConnectionScope(database)
+            'Dispose once
+            connection.Dispose()
+            'Dispose twice
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection")>
     Public Sub ConnectionScopeInsideTransactionScope()
 
         Using transaction = New System.Transactions.TransactionScope
