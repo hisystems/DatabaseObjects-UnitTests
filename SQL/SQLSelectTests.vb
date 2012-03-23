@@ -86,4 +86,36 @@ Public Class SQLSelectTests
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("SQLSelect"), TestCategory("TableAlias")>
+    Public Sub SelectTableWithDatabaseSchemaNameAndAlias()
+
+        Dim table1 As New SQLSelectTable("Table1", "T1")
+        table1.SchemaName = "dbo"
+        table1.DatabaseName = "database"
+
+        Dim selectStatement As New SQLSelect
+        selectStatement.ConnectionType = Database.ConnectionType.SQLServer
+        selectStatement.Tables.Add(table1)
+
+        Assert.AreEqual("SELECT * FROM [database].[dbo].[Table1] [T1]", selectStatement.SQL)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("SQLSelect")>
+    Public Sub SelectFromSelect()
+
+        Dim table1 As New SQLSelectTable("Table1")
+        Dim table2 As New SQLSelectTableFromSelect(New SQLSelect("Table2"), "T2")
+
+        Dim selectStatement As New SQLSelect
+        selectStatement.ConnectionType = Database.ConnectionType.SQLServer
+        selectStatement.Tables.Add(table1)
+        selectStatement.Tables.Add(table2)
+
+        Assert.AreEqual("SELECT * FROM [Table1], (SELECT * FROM [Table2]) [T2]", selectStatement.SQL)
+
+    End Sub
+
 End Class

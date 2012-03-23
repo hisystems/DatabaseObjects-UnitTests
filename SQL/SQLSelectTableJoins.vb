@@ -27,6 +27,26 @@ Public Class SQLSelectTableJoins
     End Sub
 
     <TestMethod()>
+    <TestCategory("SQL"), TestCategory("TableJoins"), TestCategory("TableAlias")>
+    Public Sub SingleTableJoinWithTableAlias()
+
+        SQLStatement.DefaultConnectionType = Database.ConnectionType.SQLServer
+
+        Dim table1 As New SQLSelectTable("Table1", "T1")
+        Dim table2 As New SQLSelectTable("Table2", "T2")
+
+        Dim selectStatement As New SQLSelect()
+        selectStatement.Tables.Add(table1)
+
+        With selectStatement.Tables.Joins.Add(table1, SQLSelectTableJoin.Type.Inner, table2)
+            .Where.Add("Table1Key", SQL.ComparisonOperator.EqualTo, "Table2Key")
+        End With
+
+        Assert.AreEqual(Of String)("SELECT * FROM ([Table1] [T1] INNER JOIN [Table2] [T2] ON [T1].[Table1Key] = [T2].[Table2Key])", selectStatement.SQL)
+
+    End Sub
+
+    <TestMethod()>
     <TestCategory("SQL"), TestCategory("TableJoins")>
     Public Sub SingleTableJoinWithMultipleConditions()
 

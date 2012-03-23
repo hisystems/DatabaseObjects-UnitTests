@@ -37,4 +37,18 @@ Public Class SQLAllFieldsExpressionTests
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("SQLExpression"), TestCategory("TableAlias")>
+    Public Sub SelectAllFieldsSimpleFromTableWithTableAlias()
+
+        Dim table As New SQLSelectTable("Table", "T")
+        Dim selectStatement As New SQLSelect()
+        selectStatement.Tables.Add(table)
+        selectStatement.ConnectionType = Database.ConnectionType.SQLServer
+        selectStatement.Fields.Add(New SQLAllFieldsExpression(table))
+
+        Assert.AreEqual("SELECT [T].* FROM [Table] [T]", selectStatement.SQL)
+
+    End Sub
+
 End Class
