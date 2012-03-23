@@ -133,4 +133,14 @@ Public Class ConstraintTests
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("Constraint")>
+    Public Sub EmailAddressConstraint()
+
+        Dim constraint As New Constraints.EmailAddressConstraint()
+
+        Assert.IsTrue(DirectCast(constraint, Constraints.IConstraint(Of String)).ValueSatisfiesConstraint("name@domain.com"))
+
+    End Sub
+
 End Class
