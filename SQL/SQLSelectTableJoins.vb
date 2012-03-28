@@ -194,4 +194,25 @@ Public Class SQLSelectTableJoins
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("TableJoins")>
+    Public Sub TableJoinWithFieldIsNullCondition()
+
+        SQLStatement.DefaultConnectionType = Database.ConnectionType.SQLServer
+
+        Dim table1 As New SQLSelectTable("Table1")
+        Dim table2 As New SQLSelectTable("Table2")
+
+        Dim selectStatement As New SQLSelect()
+        selectStatement.Tables.Add(table1)
+
+        With selectStatement.Tables.Joins.Add(table1, SQLSelectTableJoin.Type.Inner, table2)
+            .Where.Add("Table1Key", SQL.ComparisonOperator.EqualTo, "Table2Key")
+            .Where.Add(New SQLFieldExpression("Field"), ComparisonOperator.EqualTo, New SQLValueExpression())
+        End With
+
+        Assert.AreEqual(Of String)("SELECT * FROM ([Table1] INNER JOIN [Table2] ON [Table1].[Table1Key] = [Table2].[Table2Key] AND [Field] IS NULL)", selectStatement.SQL)
+
+    End Sub
+
 End Class
