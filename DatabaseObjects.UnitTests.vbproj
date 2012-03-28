@@ -80,6 +80,7 @@
     <Compile Include="Constraints\ConstraintTests.vb" />
     <Compile Include="Constraints\KeyFieldIsUniqueInCollectionConstraintTests.vb" />
     <Compile Include="DatabaseObjectLockControllerTests.vb" />
+    <Compile Include="ItemInstanceTests.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileUsingAttributes.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileList.vb" />
