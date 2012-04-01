@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Constraints\ConstraintTests.vb" />
     <Compile Include="Constraints\KeyFieldIsUniqueInCollectionConstraintTests.vb" />
+    <Compile Include="DatabaseObjectsTableJoinsTests.vb" />
     <Compile Include="DatabaseObjectLockControllerTests.vb" />
     <Compile Include="ItemInstanceTests.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileUsingAttributes.vb" />
