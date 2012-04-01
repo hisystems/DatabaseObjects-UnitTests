@@ -108,6 +108,7 @@
     <Compile Include="Misc\AssemblyInfo.vb" />
     <Compile Include="DatabaseTests.vb" />
     <Compile Include="DatabaseObjectsTests.vb" />
+    <Compile Include="SQL\SQLDataTypeSerialisationTests.vb" />
     <Compile Include="SQL\SQLGetDateFunctionExpressionTests.vb" />
     <Compile Include="SQL\SQLLeftFunctionExpressionTest.vb" />
     <Compile Include="SQL\SQLSelectTests.vb" />
