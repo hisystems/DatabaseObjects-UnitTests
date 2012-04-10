@@ -82,9 +82,9 @@
     <Compile Include="Database\ObjectReferenceBindingTests.vb" />
     <Compile Include="Constraints\ConstraintTests.vb" />
     <Compile Include="Constraints\KeyFieldIsUniqueInCollectionConstraintTests.vb" />
-    <Compile Include="DatabaseObjectsTableJoinsTests.vb" />
-    <Compile Include="DatabaseObjectLockControllerTests.vb" />
-    <Compile Include="ItemInstanceTests.vb" />
+    <Compile Include="Database\DatabaseObjectsTableJoinsTests.vb" />
+    <Compile Include="Database\DatabaseObjectLockControllerTests.vb" />
+    <Compile Include="Database\ItemInstanceTests.vb" />
     <Compile Include="Library\SimpleDatabaseObjectVolatile.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileUsingAttributes.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.vb" />
@@ -110,8 +110,9 @@
     <Compile Include="Library\SimpleDatabaseObjects.vb" />
     <Compile Include="Library\TestRootContainer.vb" />
     <Compile Include="Misc\AssemblyInfo.vb" />
-    <Compile Include="DatabaseTests.vb" />
-    <Compile Include="DatabaseObjectsTests.vb" />
+    <Compile Include="Database\DatabaseTests.vb" />
+    <Compile Include="Database\DatabaseObjectsTests.vb" />
+    <Compile Include="SQL\SQLAggregateExpressionTests.vb" />
     <Compile Include="SQL\SQLDataTypeSerialisationTests.vb" />
     <Compile Include="SQL\SQLGetDateFunctionExpressionTests.vb" />
     <Compile Include="SQL\SQLLeftFunctionExpressionTest.vb" />
