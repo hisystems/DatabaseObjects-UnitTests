@@ -44,7 +44,7 @@ Public Class ItemInstanceTests
     <Table("Table")>
     <DistinctField("Field", FieldValueAutoAssignmentType.AutoIncrement)>
     Private Class GenericTableUsingTArgument
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsUsingAttributes(Of TableItem)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjects(Of TableItem)
 
         Friend Sub New(database As Database)
 
@@ -73,7 +73,7 @@ Public Class ItemInstanceTests
     <DistinctField("Field", FieldValueAutoAssignmentType.AutoIncrement)>
     <ItemInstance(GetType(TableItemSuperClass))>
     Private Class GenericTableUsingItemInstance
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsUsingAttributes(Of TableItem)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjects(Of TableItem)
 
         Friend Sub New(database As Database)
 
@@ -225,7 +225,7 @@ Public Class ItemInstanceTests
     <DistinctField("Field", FieldValueAutoAssignmentType.AutoIncrement)>
     <ItemInstance(GetType(TableItem))>
     Private Class GenericTableOverridingItemInstance
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsUsingAttributes(Of TableItem)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of TableItem)
 
         Friend Sub New(database As Database)
 
@@ -247,7 +247,7 @@ Public Class ItemInstanceTests
 
         Dim collection As New GenericTableOverridingItemInstance(database)
 
-        Assert.AreEqual(GetType(TableItemSuperClass), DirectCast(collection, IDatabaseObjects).ItemInstance.GetType)
+        Assert.AreEqual(GetType(TableItemSuperClass), collection.Add().GetType)
 
     End Sub
 
@@ -257,7 +257,7 @@ Public Class ItemInstanceTests
     <Table("Table")>
     <DistinctField("Field", FieldValueAutoAssignmentType.AutoIncrement)>
     Private Class GenericTableOverridingItemInstanceWithNoItemInstanceAttribute
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsUsingAttributes(Of TableItem)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of TableItem)
 
         Friend Sub New(database As Database)
 
@@ -279,7 +279,7 @@ Public Class ItemInstanceTests
 
         Dim collection As New GenericTableOverridingItemInstanceWithNoItemInstanceAttribute(database)
 
-        Assert.AreEqual(GetType(TableItemSuperClass), DirectCast(collection, IDatabaseObjects).ItemInstance.GetType)
+        Assert.AreEqual(GetType(TableItemSuperClass), collection.Add().GetType)
 
     End Sub
 
@@ -289,13 +289,19 @@ Public Class ItemInstanceTests
     <Table("Table")>
     <DistinctField("Field", FieldValueAutoAssignmentType.AutoIncrement)>
     Private Class GenericTableMultipleSubClass
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsMultipleSubclassUsingAttributes(Of TableItem)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsMultipleSubclass(Of TableItem)
 
         Friend Sub New(database As Database)
 
             MyBase.New(database)
 
         End Sub
+
+        Public Function CreateItemInstance() As TableItem
+
+            Return MyBase.ItemInstance
+
+        End Function
 
         Protected Overrides Function ItemInstanceForSubclass_(objFieldValues As SQL.SQLFieldValues) As TableItem
 
@@ -322,7 +328,7 @@ Public Class ItemInstanceTests
 
         Dim collection As New GenericTableMultipleSubClass(database)
 
-        DirectCast(collection, IDatabaseObjectsMultipleSubclass).ItemInstance().GetType()
+        collection.CreateItemInstance()
 
     End Sub
 

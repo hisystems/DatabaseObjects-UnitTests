@@ -5,9 +5,9 @@ Namespace Generic
 
     <Table(SimpleDatabaseObjectsEnumerableUsingAttributes.Name)>
     <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
-    <ItemInstance(GetType(SimpleDatabaseObjectUsingAttributes))>
+    <ItemInstance(GetType(SimpleDatabaseObject))>
     Public Class SimpleDatabaseObjectsEnumerableUsingAttributes
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsEnumerableUsingAttributes(Of SimpleDatabaseObjectUsingAttributes)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsEnumerable(Of SimpleDatabaseObject)
 
         Public Const Name As String = "Generic-SimpleDatabaseObjectsEnumerableUsingAttributes"
 

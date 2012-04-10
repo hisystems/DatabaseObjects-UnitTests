@@ -3,20 +3,23 @@ Imports DatabaseObjects.SQL
 
 Namespace Generic
 
+    <Table(SimpleDatabaseObjectsVolatile.Name)>
+    <DistinctField("ParentPrimaryField")>
+    <Subset("ParentPrimaryField")>
     Public Class SimpleDatabaseObjectsVolatile
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsVolatile(Of SimpleDatabaseObjectUsingAttributes)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsVolatileList(Of SimpleDatabaseObjectVolatile)
 
         Public Const Name As String = "Generic-SimpleDatabaseObjectsVolatile"
 
-        Friend Sub New(rootContainer As RootContainer)
+        Friend Sub New(parent As DatabaseObject)
 
-            MyBase.New(rootContainer)
+            MyBase.New(parent)
 
         End Sub
 
-        Friend Sub New(database As Database)
+        Friend Sub SaveAll()
 
-            MyBase.New(database)
+            MyBase.VolatileObjectsSave()
 
         End Sub
 
@@ -26,62 +29,10 @@ Namespace Generic
 
             createTable.Name = Name
 
-            With createTable.Fields.Add("PrimaryField", DataType.Integer)
-                .KeyType = KeyType.Primary
-                .AutoIncrements = True
-            End With
-
+            createTable.Fields.Add("ParentPrimaryField", DataType.Integer)
             createTable.Fields.Add("Field1", DataType.VariableCharacter, 100)
 
             Return createTable
-
-        End Function
-
-        Protected Overrides Function DistinctFieldAutoIncrements() As Boolean
-
-            Return True
-
-        End Function
-
-        Protected Overrides Function DistinctFieldName() As String
-
-            Return "PrimaryField"
-
-        End Function
-
-        Protected Overrides Function ItemInstance_() As SimpleDatabaseObjectUsingAttributes
-
-            Return New SimpleDatabaseObjectUsingAttributes(Me)
-
-        End Function
-
-        Protected Overrides Function KeyFieldName() As String
-
-            Return String.Empty
-
-        End Function
-
-        Protected Overrides Function OrderBy() As SQL.SQLSelectOrderByFields
-
-            Return Nothing
-
-        End Function
-
-        Protected Overrides Function Subset() As SQL.SQLConditions
-
-            Return Nothing
-
-        End Function
-
-        Protected Overrides Function TableJoins(objPrimaryTable As SQL.SQLSelectTable, objTables As SQL.SQLSelectTables) As SQL.SQLSelectTableJoins
-
-            Return Nothing
-
-        End Function
-
-        Protected Overrides Function TableName() As String
-
-            Return Name
 
         End Function
 

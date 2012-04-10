@@ -3,8 +3,12 @@ Imports DatabaseObjects.SQL
 
 Namespace Generic
 
+    <Table(SimpleDatabaseObjectsListKeyed.Name)>
+    <DistinctField("PrimaryField", True)>
+    <OrderByField("Field1")>
+    <KeyField("KeyField")>
     Public Class SimpleDatabaseObjectsListKeyed
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListKeyed(Of SimpleKeyedDatabaseObjectUsingAttributes, String)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListKeyed(Of SimpleKeyedDatabaseObject, String)
 
         Public Const Name As String = "Generic-SimpleDatabaseObjectsListKeyed"
 
@@ -17,6 +21,24 @@ Namespace Generic
         Friend Sub New(database As Database)
 
             MyBase.New(database)
+
+        End Sub
+
+        Public Function First() As SimpleKeyedDatabaseObject
+
+            Return MyBase.ObjectByOrdinalFirst
+
+        End Function
+
+        Public Function Last() As SimpleKeyedDatabaseObject
+
+            Return MyBase.ObjectByOrdinalLast
+
+        End Function
+
+        Public Sub Delete(item As SimpleKeyedDatabaseObject)
+
+            MyBase.ObjectDelete(item)
 
         End Sub
 
@@ -35,54 +57,6 @@ Namespace Generic
             createTable.Fields.Add("Field1", DataType.VariableCharacter, 100)
 
             Return createTable
-
-        End Function
-
-        Protected Overrides Function DistinctFieldAutoIncrements() As Boolean
-
-            Return True
-
-        End Function
-
-        Protected Overrides Function DistinctFieldName() As String
-
-            Return "PrimaryField"
-
-        End Function
-
-        Protected Overrides Function ItemInstance_() As SimpleKeyedDatabaseObjectUsingAttributes
-
-            Return New SimpleKeyedDatabaseObjectUsingAttributes(Me)
-
-        End Function
-
-        Protected Overrides Function KeyFieldName() As String
-
-            Return "KeyField"
-
-        End Function
-
-        Protected Overrides Function OrderBy() As SQL.SQLSelectOrderByFields
-
-            Return Nothing
-
-        End Function
-
-        Protected Overrides Function Subset() As SQL.SQLConditions
-
-            Return Nothing
-
-        End Function
-
-        Protected Overrides Function TableJoins(objPrimaryTable As SQL.SQLSelectTable, objTables As SQL.SQLSelectTables) As SQL.SQLSelectTableJoins
-
-            Return Nothing
-
-        End Function
-
-        Protected Overrides Function TableName() As String
-
-            Return Name
 
         End Function
 

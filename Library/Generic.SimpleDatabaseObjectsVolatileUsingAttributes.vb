@@ -4,22 +4,16 @@ Imports DatabaseObjects.SQL
 Namespace Generic
 
     <Table(SimpleDatabaseObjectsVolatileUsingAttributes.Name)>
-    <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
-    <ItemInstance(GetType(SimpleDatabaseObjectUsingAttributes))>
+    <DistinctField("ParentPrimaryField")>
+    <Subset("ParentPrimaryField")>
     Public Class SimpleDatabaseObjectsVolatileUsingAttributes
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsVolatileUsingAttributes(Of SimpleDatabaseObjectUsingAttributes)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsVolatileUsingAttributes(Of SimpleDatabaseObject)
 
         Public Const Name As String = "Generic-SimpleDatabaseObjectsVolatileUsingAttributes"
 
-        Friend Sub New(rootContainer As RootContainer)
+        Friend Sub New(parent As DatabaseObject)
 
-            MyBase.New(rootContainer)
-
-        End Sub
-
-        Friend Sub New(database As Database)
-
-            MyBase.New(database)
+            MyBase.New(parent)
 
         End Sub
 
@@ -29,11 +23,7 @@ Namespace Generic
 
             createTable.Name = Name
 
-            With createTable.Fields.Add("PrimaryField", DataType.Integer)
-                .KeyType = KeyType.Primary
-                .AutoIncrements = True
-            End With
-
+            createTable.Fields.Add("ParentPrimaryField", DataType.Integer)
             createTable.Fields.Add("Field1", DataType.VariableCharacter, 100)
 
             Return createTable

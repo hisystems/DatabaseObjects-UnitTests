@@ -31,7 +31,7 @@ Public Class ObjectReferenceBindingTests
     <Table(MainCollection(Of IDatabaseObject).Name)>
     <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
     Private MustInherit Class MainCollection(Of T As IDatabaseObject)
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListUsingAttributes(Of T)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of T)
 
         Public Const Name As String = "Main"
 
@@ -300,7 +300,7 @@ Public Class ObjectReferenceBindingTests
     <Table(ForeignCollection.Name)>
     <DistinctField("ForeignID", FieldValueAutoAssignmentType.AutoIncrement)>
     Private Class ForeignCollection
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListUsingAttributes(Of ForeignItem)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of ForeignItem)
 
         Friend Const Name As String = "ForeignTable"
 
@@ -352,7 +352,7 @@ Public Class ObjectReferenceBindingTests
     <Table(Foreign2Collection.Name)>
     <DistinctField("Foreign2ID", FieldValueAutoAssignmentType.AutoIncrement)>
     Private Class Foreign2Collection
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListUsingAttributes(Of Foreign2Item)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of Foreign2Item)
 
         Friend Const Name As String = "Foreign2Table"
 
@@ -405,7 +405,7 @@ Public Class ObjectReferenceBindingTests
     End Class
 
     Private Class ForeignCollectionWithNoTableAndDistinctFieldAttributes
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListUsingAttributes(Of ForeignItemWithNoTableAndDistinctFieldAttributes)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of ForeignItemWithNoTableAndDistinctFieldAttributes)
 
         Friend Sub New(container As RootContainer)
 

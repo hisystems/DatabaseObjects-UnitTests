@@ -2,23 +2,17 @@
 Imports DatabaseObjects.SQL
 
 <Table(SimpleDatabaseObjectsVolatileUsingAttributes.Name)>
-<DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
-<KeyField("KeyField")>
-<ItemInstance(GetType(SimpleDatabaseObjectUsingAttributes))>
+<DistinctField("ParentPrimaryField")>
+<Subset("ParentPrimaryField")>
+<ItemInstance(GetType(SimpleDatabaseObjectVolatile))>
 Public Class SimpleDatabaseObjectsVolatileUsingAttributes
     Inherits DatabaseObjectsUsingAttributes
 
     Public Const Name As String = "SimpleDatabaseObjectsVolatileUsingAttributes"
 
-    Friend Sub New(rootContainer As RootContainer)
+    Friend Sub New(parent As DatabaseObject)
 
-        MyBase.New(rootContainer)
-
-    End Sub
-
-    Friend Sub New(database As Database)
-
-        MyBase.New(database)
+        MyBase.New(parent)
 
     End Sub
 
@@ -28,12 +22,7 @@ Public Class SimpleDatabaseObjectsVolatileUsingAttributes
 
         createTable.Name = Name
 
-        With createTable.Fields.Add("PrimaryField", DataType.Integer)
-            .KeyType = KeyType.Primary
-            .AutoIncrements = True
-        End With
-
-        createTable.Fields.Add("KeyField", DataType.VariableCharacter, 100)
+        createTable.Fields.Add("ParentPrimaryField", DataType.Integer)
         createTable.Fields.Add("Field1", DataType.VariableCharacter, 100)
 
         Return createTable

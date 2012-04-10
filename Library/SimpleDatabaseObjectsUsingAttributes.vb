@@ -4,7 +4,7 @@ Imports DatabaseObjects.SQL
 <Table(SimpleDatabaseObjectsUsingAttributes.Name)>
 <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
 <KeyField("KeyField")>
-<ItemInstance(GetType(SimpleDatabaseObjectUsingAttributes))>
+<ItemInstance(GetType(SimpleDatabaseObject))>
 Public Class SimpleDatabaseObjectsUsingAttributes
     Inherits DatabaseObjectsUsingAttributes
 

@@ -113,8 +113,12 @@ Public Class DatabaseObjectsTests
     Public Sub SimpleDatabaseObjectsVolatileInitializeWithRootContainer()
 
         EnsureTableExists(SimpleDatabaseObjectsVolatile.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New SimpleDatabaseObjectsVolatile(_rootContainer)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New SimpleDatabaseObjectsVolatile(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(_rootContainer, objNewItem.RootContainer(Of TestRootContainer)())
@@ -127,8 +131,12 @@ Public Class DatabaseObjectsTests
     Public Sub SimpleDatabaseObjectsVolatileInitializeWithDatabase()
 
         EnsureTableExists(SimpleDatabaseObjectsVolatile.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New SimpleDatabaseObjectsVolatile(_database)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New SimpleDatabaseObjectsVolatile(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(Nothing, objNewItem.RootContainer(Of TestRootContainer)())
@@ -141,8 +149,12 @@ Public Class DatabaseObjectsTests
     Public Sub SimpleDatabaseObjectsVolatileUsingAttributesInitializeWithRootContainer()
 
         EnsureTableExists(SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New SimpleDatabaseObjectsVolatileUsingAttributes(_rootContainer)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New SimpleDatabaseObjectsVolatileUsingAttributes(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(_rootContainer, objNewItem.RootContainer(Of TestRootContainer)())
@@ -155,8 +167,12 @@ Public Class DatabaseObjectsTests
     Public Sub SimpleDatabaseObjectsVolatileUsingAttributesInitializeWithDatabase()
 
         EnsureTableExists(SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New SimpleDatabaseObjectsVolatileUsingAttributes(_database)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New SimpleDatabaseObjectsVolatileUsingAttributes(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(Nothing, objNewItem.RootContainer(Of TestRootContainer)())
@@ -241,8 +257,12 @@ Public Class DatabaseObjectsTests
     Public Sub Generic_SimpleDatabaseObjectsVolatileInitializeWithRootContainer()
 
         EnsureTableExists(Generic.SimpleDatabaseObjectsVolatile.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New Generic.SimpleDatabaseObjectsVolatile(_rootContainer)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New Generic.SimpleDatabaseObjectsVolatile(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(_rootContainer, objNewItem.RootContainer(Of TestRootContainer)())
@@ -255,8 +275,12 @@ Public Class DatabaseObjectsTests
     Public Sub Generic_SimpleDatabaseObjectsVolatileInitializeWithDatabase()
 
         EnsureTableExists(Generic.SimpleDatabaseObjectsVolatile.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New Generic.SimpleDatabaseObjectsVolatile(_database)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New Generic.SimpleDatabaseObjectsVolatile(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(Nothing, objNewItem.RootContainer(Of TestRootContainer)())
@@ -269,8 +293,12 @@ Public Class DatabaseObjectsTests
     Public Sub Generic_SimpleDatabaseObjectsVolatileUsingAttributesInitializeWithRootContainer()
 
         EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New Generic.SimpleDatabaseObjectsVolatileUsingAttributes(_rootContainer)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New Generic.SimpleDatabaseObjectsVolatileUsingAttributes(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(_rootContainer, objNewItem.RootContainer(Of TestRootContainer)())
@@ -283,8 +311,12 @@ Public Class DatabaseObjectsTests
     Public Sub Generic_SimpleDatabaseObjectsVolatileUsingAttributesInitializeWithDatabase()
 
         EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New Generic.SimpleDatabaseObjectsVolatileUsingAttributes(_database)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New Generic.SimpleDatabaseObjectsVolatileUsingAttributes(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(Nothing, objNewItem.RootContainer(Of TestRootContainer)())
@@ -469,8 +501,12 @@ Public Class DatabaseObjectsTests
     Public Sub Generic_SimpleDatabaseObjectsVolatileListInitializeWithRootContainer()
 
         EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileList.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New Generic.SimpleDatabaseObjectsVolatileList(_rootContainer)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New Generic.SimpleDatabaseObjectsVolatileList(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(_rootContainer, objNewItem.RootContainer(Of TestRootContainer)())
@@ -483,8 +519,12 @@ Public Class DatabaseObjectsTests
     Public Sub Generic_SimpleDatabaseObjectsVolatileListInitializeWithDatabase()
 
         EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileList.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New Generic.SimpleDatabaseObjectsVolatileList(_database)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New Generic.SimpleDatabaseObjectsVolatileList(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(Nothing, objNewItem.RootContainer(Of TestRootContainer)())
@@ -497,8 +537,12 @@ Public Class DatabaseObjectsTests
     Public Sub Generic_SimpleDatabaseObjectsVolatileListUsingAttributesInitializeWithRootContainer()
 
         EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New Generic.SimpleDatabaseObjectsVolatileListUsingAttributes(_rootContainer)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New Generic.SimpleDatabaseObjectsVolatileListUsingAttributes(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(_rootContainer, objNewItem.RootContainer(Of TestRootContainer)())
@@ -511,8 +555,12 @@ Public Class DatabaseObjectsTests
     Public Sub Generic_SimpleDatabaseObjectsVolatileListUsingAttributesInitializeWithDatabase()
 
         EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.TableSchema)
+        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
-        Dim collection As New Generic.SimpleDatabaseObjectsVolatileListUsingAttributes(_database)
+        Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
+        Dim parentItem = parentCollection.Add
+
+        Dim collection As New Generic.SimpleDatabaseObjectsVolatileListUsingAttributes(parentItem)
         Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
 
         Assert.AreSame(Nothing, objNewItem.RootContainer(Of TestRootContainer)())
@@ -520,37 +568,23 @@ Public Class DatabaseObjectsTests
 
     End Sub
 
-    '<TestMethod()>
-    '<TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
-    'Public Sub Generic_SimpleDatabaseObjectsXXXXInitializeWithRootContainer()
-
-    '    Dim collection As New Generic.SimpleDatabaseObjectsXXXX(_rootContainer)
-    '    Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
-
-    '    Assert.AreSame(_rootContainer, objNewItem.RootContainer(Of TestRootContainer)())
-    '    Assert.AreSame(_rootContainer, collection.RootContainer(Of TestRootContainer)())
-
-    'End Sub
-
-    '<TestMethod()>
-    '<TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
-    'Public Sub Generic_SimpleDatabaseObjectsXXXXInitializeWithDatabase()
-
-    '    Dim collection As New Generic.SimpleDatabaseObjectsXXXX(_database)
-    '    Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
-
-    '    Assert.AreSame(Nothing, objNewItem.RootContainer(Of TestRootContainer)())
-    '    Assert.AreSame(Nothing, collection.RootContainer(Of TestRootContainer)())
-
-    'End Sub
-
     <TestMethod()>
     <TestCategory("DatabaseObjectsCollections")>
     <ExpectedException(GetType(NotSupportedException))>
     Public Sub SimpleDatabaseObjectsMultipleSubClassUsingAttributesItemInstanceFailure()
 
         Dim collection As New Generic.SimpleDatabaseObjectsMultipleSubclassUsingAttributes(_database)
-        Dim objNewItem As DatabaseObject = DirectCast(collection, IDatabaseObjects).ItemInstance
+        collection.CreateItemInstance()
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("DatabaseObjectsCollections")>
+    <ExpectedException(GetType(NotSupportedException))>
+    Public Sub SimpleDatabaseObjectsMultipleSubClassUsingAttributesItemInstance_Failure()
+
+        Dim collection As New Generic.SimpleDatabaseObjectsMultipleSubclassUsingAttributes(_database)
+        collection.CreateItemInstance_()
 
     End Sub
 

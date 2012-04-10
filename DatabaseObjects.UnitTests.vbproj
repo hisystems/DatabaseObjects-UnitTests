@@ -77,18 +77,21 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\SimpleDatabaseObjectsVolatileTests.vb" />
+    <Compile Include="Database\SimpleDatabaseObjectsListKeyedTests.vb" />
     <Compile Include="Database\ObjectReferenceBindingTests.vb" />
     <Compile Include="Constraints\ConstraintTests.vb" />
     <Compile Include="Constraints\KeyFieldIsUniqueInCollectionConstraintTests.vb" />
     <Compile Include="DatabaseObjectsTableJoinsTests.vb" />
     <Compile Include="DatabaseObjectLockControllerTests.vb" />
     <Compile Include="ItemInstanceTests.vb" />
+    <Compile Include="Library\SimpleDatabaseObjectVolatile.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileUsingAttributes.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileList.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatile.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsUsingAttributes.vb" />
-    <Compile Include="Library\SimpleKeyedDatabaseObjectUsingAttributes.vb" />
+    <Compile Include="Library\SimpleKeyedDatabaseObject.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsMultipleSubclassUsingAttributes.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsMultipleSubclass.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsListUsingAttributes.vb" />
@@ -102,7 +105,7 @@
     <Compile Include="Library\SimpleDatabaseObjectsVolatileUsingAttributes.vb" />
     <Compile Include="Library\SimpleDatabaseObjectsUsingAttributes.vb" />
     <Compile Include="Library\SimpleDatabaseObjectsEnumerable.vb" />
-    <Compile Include="Library\SimpleDatabaseObjectUsingAttributes.vb" />
+    <Compile Include="Library\SimpleDatabaseObject.vb" />
     <Compile Include="Library\SimpleTable.vb" />
     <Compile Include="Library\SimpleDatabaseObjects.vb" />
     <Compile Include="Library\TestRootContainer.vb" />

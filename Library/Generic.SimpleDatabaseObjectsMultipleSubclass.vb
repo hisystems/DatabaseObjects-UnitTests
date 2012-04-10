@@ -3,8 +3,10 @@ Imports DatabaseObjects.SQL
 
 Namespace Generic
 
+    <Table(SimpleDatabaseObjectsMultipleSubclass.Name)>
+    <DistinctField("PrimaryField", True)>
     Public Class SimpleDatabaseObjectsMultipleSubclass
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsMultipleSubclass(Of SimpleDatabaseObjectUsingAttributes)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsMultipleSubclass(Of SimpleDatabaseObject)
 
         Public Const Name As String = "Generic-SimpleDatabaseObjectsMultipleSubclass"
 
@@ -37,51 +39,9 @@ Namespace Generic
 
         End Function
 
-        Protected Overrides Function DistinctFieldAutoIncrements() As Boolean
+        Protected Overrides Function ItemInstanceForSubclass_(objFieldValues As SQL.SQLFieldValues) As SimpleDatabaseObject
 
-            Return True
-
-        End Function
-
-        Protected Overrides Function DistinctFieldName() As String
-
-            Return "PrimaryField"
-
-        End Function
-
-        Protected Overrides Function ItemInstanceForSubclass_(objFieldValues As SQL.SQLFieldValues) As SimpleDatabaseObjectUsingAttributes
-
-            Return New SimpleDatabaseObjectUsingAttributes(Me)
-
-        End Function
-
-        Protected Overrides Function KeyFieldName() As String
-
-            Return String.Empty
-
-        End Function
-
-        Protected Overrides Function OrderBy() As SQL.SQLSelectOrderByFields
-
-            Return Nothing
-
-        End Function
-
-        Protected Overrides Function Subset() As SQL.SQLConditions
-
-            Return Nothing
-
-        End Function
-
-        Protected Overrides Function TableJoins(objPrimaryTable As SQL.SQLSelectTable, objTables As SQL.SQLSelectTables) As SQL.SQLSelectTableJoins
-
-            Return Nothing
-
-        End Function
-
-        Protected Overrides Function TableName() As String
-
-            Return Name
+            Return New SimpleDatabaseObject(Me)
 
         End Function
 

@@ -20,7 +20,7 @@ Public Class DatabaseTests
     End Sub
 
     <TestInitialize()>
-    Public Sub InitializeTable1WithAutoIncrementPrimaryKeyAndField1()
+    Public Sub TestInitialize()
 
         AddHandler database.Connection.StatementExecuted, _
             Sub(statement As ISQLStatement)

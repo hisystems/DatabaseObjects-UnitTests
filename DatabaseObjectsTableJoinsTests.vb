@@ -32,7 +32,7 @@ Public Class DatabaseObjectsTableJoinsTests
     <OrderByField("PrimaryField")>
     <TableJoin("ReferenceID", TestReferenceCollection.Name, "ReferenceID")>
     Private Class TestCollection
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListUsingAttributes(Of TestItem)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of TestItem)
 
         Public Const Name As String = "TestCollection"
 
@@ -138,7 +138,7 @@ Public Class DatabaseObjectsTableJoinsTests
     <Table(TestReferenceCollection.Name)>
     <DistinctField("ReferenceID", FieldValueAutoAssignmentType.AutoIncrement)>
     Private Class TestReferenceCollection
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListUsingAttributes(Of TestReferenceItem)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of TestReferenceItem)
 
         Public Const Name As String = "TestReferenceCollection"
 
@@ -190,7 +190,7 @@ Public Class DatabaseObjectsTableJoinsTests
     <Table(TestReferenceCollection2.Name)>
     <DistinctField("ReferenceID", FieldValueAutoAssignmentType.AutoIncrement)>
     Private Class TestReferenceCollection2
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsListUsingAttributes(Of TestReferenceItem2)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of TestReferenceItem2)
 
         Public Const Name As String = "TestReferenceCollection2"
 

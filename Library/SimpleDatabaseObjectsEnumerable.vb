@@ -1,6 +1,11 @@
 ﻿Imports System
+Imports DatabaseObjects
 Imports DatabaseObjects.SQL
 
+<Table(SimpleDatabaseObjectsEnumerable.Name)>
+<DistinctField("PrimaryField", True)>
+<KeyField("KeyField")>
+<ItemInstance(GetType(SimpleDatabaseObject))>
 Public Class SimpleDatabaseObjectsEnumerable
     Inherits DatabaseObjectsEnumerable
 
@@ -33,54 +38,6 @@ Public Class SimpleDatabaseObjectsEnumerable
         createTable.Fields.Add("Field1", DataType.VariableCharacter, 100)
 
         Return createTable
-
-    End Function
-
-    Protected Overrides Function DistinctFieldAutoIncrements() As Boolean
-
-        Return True
-
-    End Function
-
-    Protected Overrides Function DistinctFieldName() As String
-
-        Return "PrimaryField"
-
-    End Function
-
-    Protected Overrides Function ItemInstance() As IDatabaseObject
-
-        Return New SimpleDatabaseObjectUsingAttributes(Me)
-
-    End Function
-
-    Protected Overrides Function KeyFieldName() As String
-
-        Return "KeyField"
-
-    End Function
-
-    Protected Overrides Function OrderBy() As SQL.SQLSelectOrderByFields
-
-        Return Nothing
-
-    End Function
-
-    Protected Overrides Function Subset() As SQL.SQLConditions
-
-        Return Nothing
-
-    End Function
-
-    Protected Overrides Function TableJoins(objPrimaryTable As SQL.SQLSelectTable, objTables As SQL.SQLSelectTables) As SQL.SQLSelectTableJoins
-
-        Return Nothing
-
-    End Function
-
-    Protected Overrides Function TableName() As String
-
-        Return Name
 
     End Function
 

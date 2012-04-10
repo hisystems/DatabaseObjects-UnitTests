@@ -5,9 +5,9 @@ Namespace Generic
 
     <Table(SimpleDatabaseObjectsUsingAttributes.Name)>
     <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
-    <ItemInstance(GetType(SimpleDatabaseObjectUsingAttributes))>
+    <ItemInstance(GetType(SimpleDatabaseObject))>
     Public Class SimpleDatabaseObjectsUsingAttributes
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsUsingAttributes(Of SimpleDatabaseObjectUsingAttributes)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsUsingAttributes(Of SimpleDatabaseObject)
 
         Public Const Name As String = "Generic-SimpleDatabaseObjectsUsingAttributes"
 

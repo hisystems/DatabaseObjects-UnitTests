@@ -1,8 +1,8 @@
 ﻿Imports System
 Imports DatabaseObjects.SQL
 
-Public Class SimpleKeyedDatabaseObjectUsingAttributes
-    Inherits SimpleDatabaseObjectUsingAttributes
+Public Class SimpleKeyedDatabaseObject
+    Inherits SimpleDatabaseObject
 
     <FieldMapping("KeyField")>
     Public KeyField As String

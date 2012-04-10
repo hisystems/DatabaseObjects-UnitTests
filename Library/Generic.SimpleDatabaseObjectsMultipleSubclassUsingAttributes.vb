@@ -6,7 +6,7 @@ Namespace Generic
     <Table(SimpleDatabaseObjectsMultipleSubclassUsingAttributes.Name)>
     <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
     Public Class SimpleDatabaseObjectsMultipleSubclassUsingAttributes
-        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsMultipleSubclassUsingAttributes(Of SimpleDatabaseObjectUsingAttributes)
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsMultipleSubclassUsingAttributes(Of SimpleDatabaseObject)
 
         Public Const Name As String = "Generic-SimpleDatabaseObjectsMultipleSubclassUsingAttributes"
 
@@ -21,6 +21,18 @@ Namespace Generic
             MyBase.New(database)
 
         End Sub
+
+        Public Function CreateItemInstance() As SimpleDatabaseObject
+
+            Return MyBase.ItemInstance
+
+        End Function
+
+        Public Function CreateItemInstance_() As SimpleDatabaseObject
+
+            Return MyBase.ItemInstance
+
+        End Function
 
         Friend Shared Function TableSchema() As SQLCreateTable
 
@@ -39,9 +51,9 @@ Namespace Generic
 
         End Function
 
-        Protected Overrides Function ItemInstanceForSubclass_(objFieldValues As SQL.SQLFieldValues) As SimpleDatabaseObjectUsingAttributes
+        Protected Overrides Function ItemInstanceForSubclass_(objFieldValues As SQL.SQLFieldValues) As SimpleDatabaseObject
 
-            Return New SimpleDatabaseObjectUsingAttributes(Me)
+            Return New SimpleDatabaseObject(Me)
 
         End Function
 
