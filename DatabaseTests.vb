@@ -27,13 +27,13 @@ Public Class DatabaseTests
                 TestContext.WriteLine(statement.SQL)
             End Sub
 
-        database.Connection.Start()
+        Using connection As New ConnectionScope(database)
+            If connection.Execute(New SQLTableExists(SimpleTable.Name)).Read Then
+                connection.Execute(New SQLDropTable(SimpleTable.Name))
+            End If
 
-        If database.Connection.Execute(New SQLTableExists(SimpleTable.Name)).Read Then
-            database.Connection.Execute(New SQLDropTable(SimpleTable.Name))
-        End If
-
-        database.Connection.Execute(SimpleTable.TableSchema)
+            connection.Execute(SimpleTable.TableSchema)
+        End Using
 
         With table.Add
             .Field1 = "Field1-1"
@@ -49,8 +49,6 @@ Public Class DatabaseTests
             .Field1 = "Field1-3"
             .Save()
         End With
-
-        database.Connection.Finished()
 
     End Sub
 
