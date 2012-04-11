@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\AttributesInvalidTests.vb" />
+    <Compile Include="Database\DatabaseObjectsAutoAssignmentTests.vb" />
     <Compile Include="Database\SimpleDatabaseObjectsVolatileTests.vb" />
     <Compile Include="Database\SimpleDatabaseObjectsListKeyedTests.vb" />
     <Compile Include="Database\ObjectReferenceBindingTests.vb" />
