@@ -39,4 +39,33 @@ Public Class AttributesInvalidTests
 
     End Sub
 
+    <Table("Table")>
+    <DistinctField("DistinctField")>
+    <ItemInstance(GetType(InvalidItemInstanceType))>
+    Private Class InvalidItemInstanceTypeCollection
+        Inherits DatabaseObjects
+
+        Public Sub New(database As Database)
+
+            MyBase.New(database)
+
+        End Sub
+
+    End Class
+
+    Private Class InvalidItemInstanceType
+
+    End Class
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Attribtues")>
+    <ExpectedException(GetType(ArgumentException))>
+    Public Sub InvalidItemInstanceAttributeParameter()
+
+        'This collection does not have KeyFieldAttribute specified
+        Dim collection As New InvalidItemInstanceTypeCollection(database)
+        collection.GetType()    'Loading the type information will cause the attributes to be loaded and the exception to occur
+
+    End Sub
+
 End Class
