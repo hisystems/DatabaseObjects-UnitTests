@@ -59,4 +59,51 @@ Public Class MySQLTests
 
     End Sub
 
+    ''' <summary>
+    ''' Tests the FLAG_FOUND_ROWS option.
+    ''' </summary>
+    ''' <remarks></remarks>
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("MySQL")>
+    Public Sub MySQLDatabaseConnectionReturnsRowsAffected()
+
+        Dim database As New MySQLDatabase("localhost", "TestDatabase", "root", "root")
+
+        Using connection As New ConnectionScope(database)
+            Dim update As New SQLUpdate("MySQLTestTable")
+            update.Fields.Add("BooleanField", False)
+            Dim rowsAffected = connection.ExecuteNonQuery(update)
+
+            Assert.IsTrue(rowsAffected > 0)
+        End Using
+
+    End Sub
+
+    ''' <summary>
+    ''' Tests FLAG_MULTI_STATEMENTS option.
+    ''' </summary>
+    ''' <remarks></remarks>
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("MySQL")>
+    Public Sub MySQLDatabaseConnectionExecuteBatchCommands()
+
+        Dim database As New MySQLDatabase("localhost", "TestDatabase", "root", "root")
+
+        Using connection As New ConnectionScope(database)
+            Dim updateToFalse As New SQLUpdate("MySQLTestTable")
+            updateToFalse.Fields.Add("BooleanField", False)
+
+            Dim updateToTrue As New SQLUpdate("MySQLTestTable")
+            updateToTrue.Fields.Add("BooleanField", True)
+
+            connection.ExecuteNonQuery(New ISQLStatement() {updateToFalse, updateToTrue})
+
+            Dim selectStatement As New SQLSelect("MySQLTestTable")
+            selectStatement.Fields.Add("BooleanField")
+
+            Assert.IsTrue(connection.ExecuteScalar(selectStatement))
+        End Using
+
+    End Sub
+
 End Class
