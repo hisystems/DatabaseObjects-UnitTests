@@ -1,26 +1,21 @@
-﻿Imports System.Text
+﻿Option Infer On
+
+Imports System.Text
 Imports System.Configuration
+Imports System.Linq
 Imports DatabaseObjects.SQL
 Imports DatabaseObjects.Exceptions
+Imports DatabaseObjects.UnitTestExtensions
 
-<TestClass()>
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase"})>
 Public Class DatabaseTests
 
     Public Property TestContext As TestContext
 
-    Private Shared database As Database
-    Private Shared table As SimpleTable
+    Private table As SimpleTable
 
-    <ClassInitialize()>
-    Public Shared Sub ClassInitialize(context As TestContext)
-
-        database = MicrosoftSQLServerDatabase.Parse(ConfigurationManager.ConnectionStrings("SQLServerTestDatabase").ConnectionString)
-        table = New SimpleTable(database)
-
-    End Sub
-
-    <TestInitialize()>
-    Public Sub TestInitialize()
+    <DatabaseTestInitialize()>
+    Public Sub DatabaseTestInitialize(database As Database)
 
         AddHandler database.Connection.StatementExecuted, _
             Sub(statement As ISQLStatement)
@@ -34,6 +29,8 @@ Public Class DatabaseTests
 
             connection.Execute(SimpleTable.TableSchema)
         End Using
+
+        table = New SimpleTable(database)
 
         With table.Add
             .Field1 = "Field1-1"
@@ -54,7 +51,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectByDistinctValueExists()
+    Public Sub ObjectByDistinctValueExists(database As Database)
 
         Assert.IsTrue(database.ObjectExistsByDistinctValue(table, 2))
 
@@ -62,7 +59,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectByDistinctValueDoesNotExist()
+    Public Sub ObjectByDistinctValueDoesNotExist(database As Database)
 
         Assert.IsFalse(database.ObjectExistsByDistinctValue(table, 4))
 
@@ -70,7 +67,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectExists()
+    Public Sub ObjectExists(database As Database)
 
         Assert.IsTrue(database.ObjectExists(table, "Field1-1"))
 
@@ -78,102 +75,15 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectExistsWhenItDoesNotExist()
+    Public Sub ObjectExistsWhenItDoesNotExist(database As Database)
 
         Assert.IsFalse(database.ObjectExists(table, "Field1-9999999999999"))
 
     End Sub
 
     <TestMethod()>
-    <TestCategory("Database"), TestCategory("Connection")>
-    Public Sub ConnectionScopeExecute()
-
-        Using connection = New ConnectionScope(database)
-            Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
-        End Using
-
-    End Sub
-
-    <TestMethod()>
-    <TestCategory("Database"), TestCategory("Connection")>
-    Public Sub ConnectionScopeExecuteScalar()
-
-        Using connection = New ConnectionScope(database)
-            Assert.AreNotEqual(connection.ExecuteScalar(New SQLSelect(SimpleTable.Name)), DBNull.Value)
-        End Using
-
-    End Sub
-
-    <TestMethod()>
-    <TestCategory("Database"), TestCategory("Connection")>
-    Public Sub ConnectionScopeExecuteNonQuery()
-
-        Using connection = New ConnectionScope(database)
-            With table.Add
-                .Field1 = "abc"
-                .Save()
-            End With
-        End Using
-
-    End Sub
-
-    <TestMethod()>
-    <TestCategory("Database"), TestCategory("Connection")>
-    <ExpectedException(GetType(DatabaseObjectsException))>
-    Public Sub ConnectionScopeExecuteAfterDispose()
-
-        Dim connection As New ConnectionScope(database)
-
-        Using connection
-            'Will close the connection here...
-        End Using
-
-        Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
-
-    End Sub
-
-    <TestMethod()>
-    <TestCategory("Database"), TestCategory("Connection")>
-    Public Sub ConnectionScopeDisposeTwice()
-
-        Using connection As New ConnectionScope(database)
-            'Dispose once
-            connection.Dispose()
-            'Dispose twice
-        End Using
-
-    End Sub
-
-    <TestMethod()>
-    <TestCategory("Database"), TestCategory("Connection")>
-    Public Sub ConnectionScopeInsideTransactionScope()
-
-        Using transaction = New System.Transactions.TransactionScope
-            Using connection = New ConnectionScope(database)
-                Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
-            End Using
-            transaction.Complete()
-        End Using
-
-    End Sub
-
-    <TestMethod()>
-    <TestCategory("Database"), TestCategory("Connection")>
-    Public Sub ConnectionScopeOutsideTransactionScope()
-
-        Using connection = New ConnectionScope(database)
-            Using transaction = New System.Transactions.TransactionScope
-                Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
-                transaction.Complete()
-            End Using
-            Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
-        End Using
-
-    End Sub
-
-    <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectIfExists()
+    Public Sub ObjectIfExists(database As Database)
 
         Assert.AreNotSame(database.ObjectIfExists(table, 1), Nothing)
 
@@ -181,7 +91,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectExistsByDistinctValue()
+    Public Sub ObjectExistsByDistinctValue(database As Database)
 
         Assert.IsTrue(database.ObjectExistsByDistinctValue(table, 1))
 
@@ -189,7 +99,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectSaveNew()
+    Public Sub ObjectSaveNew(database As Database)
 
         Dim newObject = table.Add
         newObject.Field1 = "Field1-NEW"
@@ -200,7 +110,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectSaveExisting()
+    Public Sub ObjectSaveExisting(database As Database)
 
         Dim existingObject = table("Field1-1")
         existingObject.Field1 = "Field1-1-Amended"
@@ -211,7 +121,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectByKeyIfExists()
+    Public Sub ObjectByKeyIfExists(database As Database)
 
         Assert.AreNotSame(database.ObjectByKeyIfExists(table, "Field1-1"), Nothing)
 
@@ -219,7 +129,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectByOrdinalFirst()
+    Public Sub ObjectByOrdinalFirst(database As Database)
 
         Dim firstObject As SimpleTableItem = database.ObjectByOrdinalFirst(table)
 
@@ -229,7 +139,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectByOrdinalLast()
+    Public Sub ObjectByOrdinalLast(database As Database)
 
         Dim lastObject As SimpleTableItem = database.ObjectByOrdinalLast(table)
 
@@ -239,7 +149,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectsCount()
+    Public Sub ObjectsCount(database As Database)
 
         Assert.AreEqual(database.ObjectsCount(table), 3)
 
@@ -247,7 +157,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectDelete()
+    Public Sub ObjectDelete(database As Database)
 
         database.ObjectDelete(table, table("Field1-1"))
 
@@ -257,7 +167,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectsDeleteAll()
+    Public Sub ObjectsDeleteAll(database As Database)
 
         database.ObjectsDeleteAll(table)
 
@@ -267,7 +177,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectsList()
+    Public Sub ObjectsList(database As Database)
 
         Dim items = database.ObjectsList(table)
 
@@ -277,7 +187,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectsSearch()
+    Public Sub ObjectsSearch(database As Database)
 
         Dim conditions As New SQLConditions()
         conditions.Add("Field1", ComparisonOperator.EqualTo, "Field1-1")
@@ -290,7 +200,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectGetFieldValue()
+    Public Sub ObjectGetFieldValue(database As Database)
 
         Dim item2 = table("Field1-2")
 
@@ -300,7 +210,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectSetFieldValue()
+    Public Sub ObjectSetFieldValue(database As Database)
 
         Dim item2 = table("Field1-2")
         database.ObjectSetFieldValue(item2, "Field1", "Field1-2-NEW")
@@ -311,7 +221,7 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
-    Public Sub ObjectsDictionary()
+    Public Sub ObjectsDictionary(database As Database)
 
         Dim items = database.ObjectsDictionary(table)
 
