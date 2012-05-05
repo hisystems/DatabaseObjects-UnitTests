@@ -132,7 +132,7 @@
     <Compile Include="SQL\SQLCaseExpressionTest.vb" />
     <Compile Include="SQL\SQLConditionExpressionTest.vb" />
     <Compile Include="SQL\SQLLengthFunctionExpressionTest.vb" />
-    <Compile Include="SQL\SQLViewExistsTest.vb" />
+    <Compile Include="SQL\SQLViewTest.vb" />
     <Compile Include="SQL\SQLDropViewTest.vb" />
     <Compile Include="SQL\SQLCreateViewTest.vb" />
     <Compile Include="SQL\SQLBitwiseExpressionTest.vb" />
