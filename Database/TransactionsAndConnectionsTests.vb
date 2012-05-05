@@ -105,30 +105,132 @@ Public Class TransactionsAndConnectionsTests
     End Sub
 
     <TestMethod()>
-    <TestCategory("Database"), TestCategory("Connection")>
-    Public Sub ConnectionScopeInsideTransactionScope()
+    <TestCategory("Database"), TestCategory("Connection"), TestCategory("TransactionScope")>
+    Public Sub TransactionScopeAndConnectionScope()
 
         Using transaction = New System.Transactions.TransactionScope
             Using connection = New ConnectionScope(database)
-                Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
+                Dim insert As New SQLInsert With {.TableName = SimpleTable.Name}
+                insert.Fields.Add("Field1", "Field1-2")
+                connection.Execute(insert)
             End Using
+
+            With table.Add
+                .Field1 = "Field1-3"
+                .Save()
+            End With
             transaction.Complete()
+        End Using
+
+        Using connection = New ConnectionScope(database)
+            Assert.AreEqual(3, connection.ExecuteScalar(GetRowCount(SimpleTable.Name)))
         End Using
 
     End Sub
 
     <TestMethod()>
-    <TestCategory("Database"), TestCategory("Connection")>
-    Public Sub ConnectionScopeOutsideTransactionScope()
+    <TestCategory("Database"), TestCategory("Connection"), TestCategory("TransactionScope")>
+    Public Sub TransactionScopeAndConnectionStartFinished()
+
+        Using transaction = New System.Transactions.TransactionScope
+            database.Connection.Start()
+            Dim insert As New SQLInsert With {.TableName = SimpleTable.Name}
+            insert.Fields.Add("Field1", "Field1-2")
+            database.Connection.Execute(insert)
+            database.Connection.Finished()
+
+            With table.Add
+                .Field1 = "Field1-3"
+                .Save()
+            End With
+            transaction.Complete()
+        End Using
 
         Using connection = New ConnectionScope(database)
-            Using transaction = New System.Transactions.TransactionScope
-                Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
-                transaction.Complete()
-            End Using
-            Assert.IsTrue(connection.Execute(New SQLSelect(SimpleTable.Name)).Read)
+            Assert.AreEqual(3, connection.ExecuteScalar(GetRowCount(SimpleTable.Name)))
         End Using
 
     End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection"), TestCategory("TransactionScope")>
+    Public Sub TransactionScopeAndConnectionScopeWithRollback()
+
+        Using transaction = New System.Transactions.TransactionScope
+            Using connection = New ConnectionScope(database)
+                Dim insert As New SQLInsert With {.TableName = SimpleTable.Name}
+                insert.Fields.Add("Field1", "Field1-2")
+                connection.Execute(insert)
+            End Using
+
+            With table.Add
+                .Field1 = "Field1-3"
+                .Save()
+            End With
+        End Using
+
+        Using connection = New ConnectionScope(database)
+            Assert.AreEqual(1, connection.ExecuteScalar(GetRowCount(SimpleTable.Name)))
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection"), TestCategory("TransactionScope")>
+    Public Sub BeingCommitTransaction()
+
+        database.Connection.BeginTransaction(IsolationLevel.Serializable)
+
+        Using connection = New ConnectionScope(database)
+            Dim insert As New SQLInsert With {.TableName = SimpleTable.Name}
+            insert.Fields.Add("Field1", "Field1-2")
+            connection.Execute(insert)
+        End Using
+
+        With table.Add
+            .Field1 = "Field1-3"
+            .Save()
+        End With
+
+        database.Connection.CommitTransaction()
+
+        Using connection = New ConnectionScope(database)
+            Assert.AreEqual(3, connection.ExecuteScalar(GetRowCount(SimpleTable.Name)))
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection"), TestCategory("TransactionScope")>
+    Public Sub BeingRollbackTransaction()
+
+        database.Connection.BeginTransaction(IsolationLevel.Serializable)
+
+        Using connection = New ConnectionScope(database)
+            Dim insert As New SQLInsert With {.TableName = SimpleTable.Name}
+            insert.Fields.Add("Field1", "Field1-2")
+            connection.Execute(insert)
+        End Using
+
+        With table.Add
+            .Field1 = "Field1-3"
+            .Save()
+        End With
+
+        database.Connection.RollbackTransaction()
+
+        Using connection = New ConnectionScope(database)
+            Assert.AreEqual(1, connection.ExecuteScalar(GetRowCount(SimpleTable.Name)))
+        End Using
+
+    End Sub
+
+    Private Shared Function GetRowCount(tableName As String) As SQLSelect
+
+        Dim rowsCount = New SQLSelect(tableName)
+        rowsCount.Fields.Add("", AggregateFunction.Count)
+        Return rowsCount
+
+    End Function
 
 End Class
