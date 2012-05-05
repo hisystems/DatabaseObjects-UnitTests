@@ -44,30 +44,6 @@ Public Class SQLViewTest
 
     <TestMethod()>
     <TestCategory("SQL"), TestCategory("Views")>
-    Public Sub ViewExistsTSQL()
-
-        SQLStatement.DefaultConnectionType = Database.ConnectionType.SQLServer
-
-        Dim viewExists As New SQLViewExists("ViewName")
-
-        Assert.AreEqual(Of String)("SELECT * FROM [sysobjects] WHERE [Name] = 'ViewName' AND [XType] = 'V'", viewExists.SQL)
-
-    End Sub
-
-    <TestMethod()>
-    <TestCategory("SQL"), TestCategory("Views")>
-    Public Sub ViewExistsMySQL()
-
-        SQLStatement.DefaultConnectionType = Database.ConnectionType.MySQL
-
-        Dim viewExists As New SQLViewExists("ViewName")
-
-        Assert.AreEqual(Of String)("SHOW VIEWS LIKE 'ViewName'", viewExists.SQL)
-
-    End Sub
-
-    <TestMethod()>
-    <TestCategory("SQL"), TestCategory("Views")>
     Public Sub ViewExistsHyperSQL()
 
         SQLStatement.DefaultConnectionType = Database.ConnectionType.HyperSQL
