@@ -233,4 +233,82 @@ Public Class TransactionsAndConnectionsTests
 
     End Function
 
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection"), TestCategory("LocalTransactionScope")>
+    Public Sub LocalTransactionScope()
+
+        Using localTransaction = New LocalTransactionScope(database)
+            Dim insert As New SQLInsert With {.TableName = SimpleTable.Name}
+            insert.Fields.Add("Field1", "Field1-2")
+            localTransaction.Execute(insert)
+
+            With table.Add
+                .Field1 = "Field1-3"
+                .Save()
+            End With
+
+            localTransaction.Complete()
+        End Using
+
+        Using connection = New ConnectionScope(database)
+            Assert.AreEqual(3, connection.ExecuteScalar(GetRowCount(SimpleTable.Name)))
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection"), TestCategory("LocalTransactionScope")>
+    <ExpectedException(GetType(InvalidOperationException))>
+    Public Sub LocalTransactionScopeDuplicateCompleteError()
+
+        Using localTransaction = New LocalTransactionScope(database)
+            localTransaction.Complete()
+            localTransaction.Complete()
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection"), TestCategory("LocalTransactionScope")>
+    Public Sub LocalTransactionScopeRollback()
+
+        Try
+            Using localTransaction = New LocalTransactionScope(database)
+                Dim insert As New SQLInsert With {.TableName = SimpleTable.Name}
+                insert.Fields.Add("Field1", "Field1-2")
+                localTransaction.Execute(insert)
+
+                Dim insert2 As New SQLInsert With {.TableName = SimpleTable.Name}
+                insert2.Fields.Add("InvalidField", "Field1-3")
+                localTransaction.Execute(insert2)   'Cause an exception to be thrown, thereby causing a rollback
+
+                localTransaction.Complete()     'Will never run because of exception in second INSERT
+            End Using
+        Catch ex As Exception
+
+        End Try
+
+        Using connection = New ConnectionScope(database)
+            Assert.AreEqual(1, connection.ExecuteScalar(GetRowCount(SimpleTable.Name)))
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("Connection"), TestCategory("LocalTransactionScope")>
+    Public Sub LocalTransactionScopeImplicitRollback()
+
+        Using localTransaction = New LocalTransactionScope(database)
+            With table.Add
+                .Field1 = "Field1-3"
+                .Save()
+            End With
+        End Using
+
+        Using connection = New ConnectionScope(database)
+            Assert.AreEqual(1, connection.ExecuteScalar(GetRowCount(SimpleTable.Name)))
+        End Using
+
+    End Sub
+
 End Class
