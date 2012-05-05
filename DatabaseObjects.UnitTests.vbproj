@@ -120,6 +120,7 @@
     <Compile Include="Misc\AssemblyInfo.vb" />
     <Compile Include="Database\DatabaseTests.vb" />
     <Compile Include="Database\DatabaseObjectsTests.vb" />
+    <Compile Include="SQL\SQLExpressionTests.vb" />
     <Compile Include="SQL\SQLIndexTests.vb" />
     <Compile Include="SQL\SQLStringConcatExpressionTests.vb" />
     <Compile Include="SQL\SQLAggregateExpressionTests.vb" />
