@@ -241,7 +241,7 @@ Public Class SQLExpressionTests
     <TestCategory("SQL"), TestCategory("SQLExpression")>
     Public Sub ConcatenateFieldAndStringUsingAmpersand()
 
-        Dim expression = New SQLFieldExpression("Field") & "Value"
+        Dim expression = New SQLFieldExpression("Field") + "Value"
 
         Assert.AreEqual("[Field] + 'Value'", expression.SQL(Database.ConnectionType.SQLServer))
 
@@ -251,7 +251,7 @@ Public Class SQLExpressionTests
     <TestCategory("SQL"), TestCategory("SQLExpression")>
     Public Sub ConcatenateStringAndFieldUsingAmpersand()
 
-        Dim expression = "Value" & New SQLFieldExpression("Field")
+        Dim expression = "Value" + New SQLFieldExpression("Field")
 
         Assert.AreEqual("'Value' + [Field]", expression.SQL(Database.ConnectionType.SQLServer))
 
