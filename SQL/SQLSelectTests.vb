@@ -118,4 +118,17 @@ Public Class SQLSelectTests
 
     End Sub
 
+	<TestMethod()>
+	<TestCategory("SQL"), TestCategory("SQLSelect")>
+	Public Sub SelectOrderByFieldsIndexerByName()
+
+		Dim selectStatement As New SQLSelect("Table")
+		selectStatement.OrderBy.Add("Field1")
+
+		Dim field1 = selectStatement.OrderBy("Field1")
+		Assert.AreEqual("Field1", field1.Name)
+		Assert.AreEqual(OrderBy.Ascending, field1.Order)
+
+	End Sub
+
 End Class

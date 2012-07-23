@@ -254,4 +254,19 @@ Public Class SQLTableTest
 
     End Sub
 
+	<TestMethod()>
+	<TestCategory("SQL"), TestCategory("TableSchema")>
+	Public Sub AlterTableFieldsIndexderByName()
+
+		Dim alterTable As New SQLAlterTable
+		alterTable.Name = "Table1"
+		Dim field1 = alterTable.Fields("Field1")
+		Dim field2 = alterTable.Fields("Field2")
+		field1.KeyType = KeyType.Primary
+
+		Dim field1Reloaded = alterTable.Fields("Field1")
+		Assert.AreEqual(KeyType.Primary, field1Reloaded.KeyType)
+
+	End Sub
+
 End Class
