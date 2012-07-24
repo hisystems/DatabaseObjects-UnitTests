@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports DatabaseObjects.SQL
+Imports DatabaseObjects.SQL.Serializers
 
 <TestClass()>
 Public Class SQLLeftFunctionExpressionTest
@@ -12,7 +13,7 @@ Public Class SQLLeftFunctionExpressionTest
 
         Dim left As New SQLLeftFunctionExpression("Field1", 2)
 
-        Assert.AreEqual("LEFT([Field1], 2)", left.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("LEFT([Field1], 2)", left.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 

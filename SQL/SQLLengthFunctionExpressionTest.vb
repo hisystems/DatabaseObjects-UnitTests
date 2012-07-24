@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports DatabaseObjects.SQL
+Imports DatabaseObjects.SQL.Serializers
 
 <TestClass()>
 Public Class SQLLengthFunctionExpressionTest
@@ -10,7 +11,7 @@ Public Class SQLLengthFunctionExpressionTest
 
         Dim lengthFunction As New SQLLengthFunctionExpression(New SQLValueExpression("123"))
 
-        Assert.AreEqual(Of String)(lengthFunction.SQL(Database.ConnectionType.SQLServer), "LEN('123')")
+		Assert.AreEqual(Of String)(lengthFunction.SQL(Serializers.Items(Database.ConnectionType.SQLServer)), "LEN('123')")
 
     End Sub
 
@@ -20,7 +21,7 @@ Public Class SQLLengthFunctionExpressionTest
 
         Dim lengthFunction As New SQLLengthFunctionExpression(New SQLValueExpression("123"))
 
-        Assert.AreEqual(Of String)(lengthFunction.SQL(Database.ConnectionType.MySQL), "LENGTH('123')")
+		Assert.AreEqual(Of String)(lengthFunction.SQL(Serializers.Items(Database.ConnectionType.MySQL)), "LENGTH('123')")
 
     End Sub
 

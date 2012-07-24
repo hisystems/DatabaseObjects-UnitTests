@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports DatabaseObjects.SQL
+Imports DatabaseObjects.SQL.Serializers
 
 <TestClass()>
 Public Class SQLExpressionTests
@@ -10,7 +11,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") + 1
 
-        Assert.AreEqual("([Field] + 1)", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field] + 1)", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -20,7 +21,7 @@ Public Class SQLExpressionTests
 
         Dim expression = 1 + New SQLFieldExpression("Field")
 
-        Assert.AreEqual("(1 + [Field])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("(1 + [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -30,7 +31,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") + New DateTime(2000, 1, 1)
 
-        Assert.AreEqual("([Field] + '2000-1-1')", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field] + '2000-1-1')", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -40,7 +41,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New DateTime(2000, 1, 1) + New SQLFieldExpression("Field")
 
-        Assert.AreEqual("('2000-1-1' + [Field])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("('2000-1-1' + [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -50,7 +51,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") - 1
 
-        Assert.AreEqual("([Field] - 1)", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field] - 1)", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -60,7 +61,7 @@ Public Class SQLExpressionTests
 
         Dim expression = 1 - New SQLFieldExpression("Field")
 
-        Assert.AreEqual("(1 - [Field])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("(1 - [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -70,7 +71,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") - New DateTime(2000, 1, 1)
 
-        Assert.AreEqual("([Field] - '2000-1-1')", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field] - '2000-1-1')", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -80,7 +81,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New DateTime(2000, 1, 1) - New SQLFieldExpression("Field")
 
-        Assert.AreEqual("('2000-1-1' - [Field])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("('2000-1-1' - [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -90,7 +91,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") * 1
 
-        Assert.AreEqual("([Field] * 1)", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field] * 1)", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -100,7 +101,7 @@ Public Class SQLExpressionTests
 
         Dim expression = 1 * New SQLFieldExpression("Field")
 
-        Assert.AreEqual("(1 * [Field])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("(1 * [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -110,7 +111,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") / 1
 
-        Assert.AreEqual("([Field] / 1)", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field] / 1)", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -120,7 +121,7 @@ Public Class SQLExpressionTests
 
         Dim expression = 1 / New SQLFieldExpression("Field")
 
-        Assert.AreEqual("(1 / [Field])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("(1 / [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -130,7 +131,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") Mod 1
 
-        Assert.AreEqual("([Field] % 1)", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field] % 1)", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -140,7 +141,7 @@ Public Class SQLExpressionTests
 
         Dim expression = 1 Mod New SQLFieldExpression("Field")
 
-        Assert.AreEqual("(1 % [Field])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("(1 % [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -150,7 +151,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") And 1
 
-        Assert.AreEqual("([Field] & 1)", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field] & 1)", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -160,7 +161,7 @@ Public Class SQLExpressionTests
 
         Dim expression = 1 And New SQLFieldExpression("Field")
 
-        Assert.AreEqual("(1 & [Field])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("(1 & [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -170,7 +171,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") Or 1
 
-        Assert.AreEqual("([Field] | 1)", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field] | 1)", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -180,7 +181,7 @@ Public Class SQLExpressionTests
 
         Dim expression = 1 Or New SQLFieldExpression("Field")
 
-        Assert.AreEqual("(1 | [Field])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("(1 | [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -191,7 +192,7 @@ Public Class SQLExpressionTests
         'Will revert to using arithmetic + because neither of the expressions are of type string or SQLStringConcatExpression.
         Dim expression = New SQLFieldExpression("Field1") + New SQLFieldExpression("Field2")
 
-        Assert.AreEqual("([Field1] + [Field2])", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("([Field1] + [Field2])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -202,7 +203,7 @@ Public Class SQLExpressionTests
         'Will not revert to arithmetic + because "Value" implies that the expression type is string 
         Dim expression = ("A'B" + New SQLFieldExpression("Field1")) + New SQLFieldExpression("Field2")
 
-        Assert.AreEqual("'A''B' + [Field1] + [Field2]", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("'A''B' + [Field1] + [Field2]", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -213,7 +214,7 @@ Public Class SQLExpressionTests
         'Will not revert to arithmetic + because "Value" implies that the expression type is string 
         Dim expression = New SQLFieldExpression("Field1") + (New SQLFieldExpression("Field2") + "A'B")
 
-        Assert.AreEqual("[Field1] + [Field2] + 'A''B'", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("[Field1] + [Field2] + 'A''B'", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -223,7 +224,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") + "Value"
 
-        Assert.AreEqual("[Field] + 'Value'", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("[Field] + 'Value'", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -233,7 +234,7 @@ Public Class SQLExpressionTests
 
         Dim expression = "Value" + New SQLFieldExpression("Field")
 
-        Assert.AreEqual("'Value' + [Field]", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("'Value' + [Field]", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -243,7 +244,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") + "Value"
 
-        Assert.AreEqual("[Field] + 'Value'", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("[Field] + 'Value'", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -253,7 +254,7 @@ Public Class SQLExpressionTests
 
         Dim expression = "Value" + New SQLFieldExpression("Field")
 
-        Assert.AreEqual("'Value' + [Field]", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("'Value' + [Field]", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -263,7 +264,7 @@ Public Class SQLExpressionTests
 
         Dim expression = ((((New SQLFieldExpression("Field") + 2) - 3) * 4) / 5)
 
-        Assert.AreEqual("(((([Field] + 2) - 3) * 4) / 5)", expression.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("(((([Field] + 2) - 3) * 4) / 5)", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 

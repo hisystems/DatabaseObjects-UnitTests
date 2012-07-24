@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports DatabaseObjects.SQL
+Imports DatabaseObjects.SQL.Serializers
 
 <TestClass()>
 Public Class SQLGetDateFunctionExpressionTests
@@ -12,7 +13,7 @@ Public Class SQLGetDateFunctionExpressionTests
 
         Dim getDateExpression As New SQLGetDateFunctionExpression
 
-        Assert.AreEqual("GETDATE()", getDateExpression.SQL(Database.ConnectionType.SQLServer), ignoreCase:=True)
+		Assert.AreEqual("GETDATE()", getDateExpression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)), ignoreCase:=True)
 
     End Sub
 
@@ -22,7 +23,7 @@ Public Class SQLGetDateFunctionExpressionTests
 
         Dim getDateExpression As New SQLGetDateFunctionExpression
 
-        Assert.AreEqual("CURDATE()", getDateExpression.SQL(Database.ConnectionType.MySQL), ignoreCase:=True)
+		Assert.AreEqual("CURDATE()", getDateExpression.SQL(Serializers.Items(Database.ConnectionType.MySQL)), ignoreCase:=True)
 
     End Sub
 

@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports DatabaseObjects.SQL
+Imports DatabaseObjects.SQL.Serializers
 
 <TestClass()>
 Public Class SQLConditionExpressionTest
@@ -12,7 +13,7 @@ Public Class SQLConditionExpressionTest
 
         Dim condition As New SQLConditionExpression(New SQLValueExpression(1), ComparisonOperator.LessThan, New SQLValueExpression(2))
 
-        Assert.AreEqual("1 < 2", condition.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("1 < 2", condition.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -25,7 +26,7 @@ Public Class SQLConditionExpressionTest
         condition.Compare = ComparisonOperator.LessThan
         condition.RightExpression = New SQLValueExpression(2)
 
-        Assert.AreEqual("1 < 2", condition.SQL(Database.ConnectionType.SQLServer))
+		Assert.AreEqual("1 < 2", condition.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -50,7 +51,7 @@ Public Class SQLConditionExpressionTest
         Dim condition As New SQLConditionExpression()
         condition.LeftExpression = New SQLValueExpression(1)
 
-        condition.SQL(Database.ConnectionType.SQLServer)
+		condition.SQL(Serializers.Items(Database.ConnectionType.SQLServer))
 
     End Sub
 
@@ -62,7 +63,7 @@ Public Class SQLConditionExpressionTest
         Dim condition As New SQLConditionExpression()
         condition.RightExpression = New SQLValueExpression(2)
 
-        condition.SQL(Database.ConnectionType.SQLServer)
+		condition.SQL(Serializers.Items(Database.ConnectionType.SQLServer))
 
     End Sub
 

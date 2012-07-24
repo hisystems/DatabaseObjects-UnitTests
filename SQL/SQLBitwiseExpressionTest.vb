@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports DatabaseObjects.SQL
+Imports DatabaseObjects.SQL.Serializers
 
 <TestClass()>
 Public Class SQLBitwiseExpressionTest
@@ -13,7 +14,7 @@ Public Class SQLBitwiseExpressionTest
         objBitwiseOperator.Operator = BitwiseOperator.And
         objBitwiseOperator.RightExpression = New SQLValueExpression(2)
 
-        Assert.AreEqual(Of String)(objBitwiseOperator.SQL(Database.ConnectionType.SQLServer), "(1 & 2)")
+		Assert.AreEqual(Of String)(objBitwiseOperator.SQL(Serializers.Items(Database.ConnectionType.SQLServer)), "(1 & 2)")
 
     End Sub
 
@@ -26,7 +27,7 @@ Public Class SQLBitwiseExpressionTest
         objBitwiseOperator.Operator = BitwiseOperator.Or
         objBitwiseOperator.RightExpression = New SQLValueExpression(2)
 
-        Assert.AreEqual(Of String)(objBitwiseOperator.SQL(Database.ConnectionType.SQLServer), "(1 | 2)")
+		Assert.AreEqual(Of String)(objBitwiseOperator.SQL(Serializers.Items(Database.ConnectionType.SQLServer)), "(1 | 2)")
 
     End Sub
 
@@ -38,7 +39,7 @@ Public Class SQLBitwiseExpressionTest
         Dim objBitwiseOperator As New SQLBitwiseExpression()
         objBitwiseOperator.LeftExpression = New SQLValueExpression(1)
 
-        objBitwiseOperator.SQL(Database.ConnectionType.SQLServer)
+		objBitwiseOperator.SQL(Serializers.Items(Database.ConnectionType.SQLServer))
 
     End Sub
 
@@ -50,7 +51,7 @@ Public Class SQLBitwiseExpressionTest
         Dim objBitwiseOperator As New SQLBitwiseExpression()
         objBitwiseOperator.RightExpression = New SQLValueExpression(1)
 
-        objBitwiseOperator.SQL(Database.ConnectionType.SQLServer)
+		objBitwiseOperator.SQL(Serializers.Items(Database.ConnectionType.SQLServer))
 
     End Sub
 

@@ -15,7 +15,7 @@ Public Class SQLViewTest
                 Dim createTable As New SQLCreateTable
                 createTable.Name = "Table1"
                 createTable.Fields.Add("Field1", DataType.Integer)
-                connection.Execute(New SQLDropTable(createTable.Name))
+				connection.Execute(createTable)
             End If
 
             If connection.Execute(New SQLViewExists("View1")).Read Then
