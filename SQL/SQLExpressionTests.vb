@@ -31,7 +31,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") + New DateTime(2000, 1, 1)
 
-		Assert.AreEqual("([Field] + '2000-1-1')", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
+		Assert.AreEqual("([Field] + '2000-01-01')", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -41,7 +41,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New DateTime(2000, 1, 1) + New SQLFieldExpression("Field")
 
-		Assert.AreEqual("('2000-1-1' + [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
+		Assert.AreEqual("('2000-01-01' + [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -71,7 +71,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New SQLFieldExpression("Field") - New DateTime(2000, 1, 1)
 
-		Assert.AreEqual("([Field] - '2000-1-1')", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
+		Assert.AreEqual("([Field] - '2000-01-01')", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 
@@ -81,7 +81,7 @@ Public Class SQLExpressionTests
 
         Dim expression = New DateTime(2000, 1, 1) - New SQLFieldExpression("Field")
 
-		Assert.AreEqual("('2000-1-1' - [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
+		Assert.AreEqual("('2000-01-01' - [Field])", expression.SQL(Serializers.Items(Database.ConnectionType.SQLServer)))
 
     End Sub
 

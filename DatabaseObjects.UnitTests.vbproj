@@ -56,6 +56,11 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.SQLite, Version=1.0.81.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\System.Data.SQLite\2008\bin\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -78,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\AttributesInvalidTests.vb" />
+    <Compile Include="Database\FieldMappingTests.vb" />
     <Compile Include="Database\TransactionsAndConnectionsTests.vb" />
     <Compile Include="Database\MySQLTests.vb" />
     <Compile Include="Database\DatabaseObjectsAutoAssignmentTests.vb" />

@@ -17,7 +17,7 @@ Public Class SQLDataTypeSerialisationTests
         insert.ConnectionType = Database.ConnectionType.SQLServer
         insert.Fields.Add("DateTimeField", dateAndTime)
 
-        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-1-2 3:4:5.6')", insert.SQL)
+        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02 3:4:5.6')", insert.SQL)
 
     End Sub
 
@@ -32,7 +32,7 @@ Public Class SQLDataTypeSerialisationTests
         insert.ConnectionType = Database.ConnectionType.SQLServer
         insert.Fields.Add("DateTimeField", dateAndTime)
 
-        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-1-2')", insert.SQL)
+        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02')", insert.SQL)
 
     End Sub
 

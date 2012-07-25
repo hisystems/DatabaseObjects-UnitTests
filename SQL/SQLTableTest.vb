@@ -2,7 +2,7 @@
 Imports DatabaseObjects.SQL
 Imports DatabaseObjects.UnitTestExtensions
 
-<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase"})>
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase"})>
 Public Class SQLTableTest
 
     <DatabaseTestInitialize()>
@@ -80,6 +80,11 @@ Public Class SQLTableTest
     <TestCategory("SQL"), TestCategory("TableSchema")>
     Public Sub AlterTableDropField(database As Database)
 
+        If database.Connection.Type = Global.DatabaseObjects.Database.ConnectionType.SQLite Then
+            'SQLite does not support dropping columns
+            Return
+        End If
+
         Dim createTable As New SQLCreateTable
         createTable.Name = "Table1"
         createTable.Fields.Add("Field1", DataType.Integer)
@@ -96,6 +101,23 @@ Public Class SQLTableTest
         Using connection = New ConnectionScope(database)
             connection.Execute(alterTable)
         End Using
+
+    End Sub
+
+    ''' <summary>
+    ''' This is not support in SQLite databases.
+    ''' </summary>
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("TableSchema")>
+    <ExpectedException(GetType(NotSupportedException))>
+    Public Sub AlterTableDropFieldSQLiteFailure()
+
+        Dim alterTable As New SQLAlterTable
+        alterTable.ConnectionType = Database.ConnectionType.SQLite
+        alterTable.Name = "Table1"
+        alterTable.Fields.Drop("Field2")
+
+        Dim sql = alterTable.SQL
 
     End Sub
 

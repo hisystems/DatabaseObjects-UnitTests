@@ -7,7 +7,7 @@ Imports DatabaseObjects.SQL
 Imports DatabaseObjects.Exceptions
 Imports DatabaseObjects.UnitTestExtensions
 
-<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase"})>
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase"})>
 Public Class DatabaseTests
 
     Public Property TestContext As TestContext
