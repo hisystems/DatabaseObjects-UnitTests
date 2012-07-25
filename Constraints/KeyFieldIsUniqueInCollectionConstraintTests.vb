@@ -29,13 +29,7 @@ Public Class KeyFieldIsUniqueInCollectionConstraintTests
                 TestContext.WriteLine(statement.SQL)
             End Sub
 
-        Using connection As New ConnectionScope(database)
-            If connection.Execute(New SQLTableExists(SimpleTable.Name)).Read Then
-                connection.Execute(New SQLDropTable(SimpleTable.Name))
-            End If
-
-            connection.Execute(SimpleTable.TableSchema)
-        End Using
+		database.RecreateTable(SimpleTable.TableSchema)
 
         With table.Add
             .Field1 = "Field1-1"

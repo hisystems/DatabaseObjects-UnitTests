@@ -476,22 +476,9 @@ Public Class ObjectReferenceBindingTests
             End Sub
 
         'Clear the main collection database table
-        Using connection As New ConnectionScope(database)
-            DropIfExistsAndCreateTable(MainCollection(Of IDatabaseObject).TableSchema)
-            DropIfExistsAndCreateTable(ForeignCollection.TableSchema)
-            DropIfExistsAndCreateTable(Foreign2Collection.TableSchema)
-        End Using
-
-    End Sub
-
-    Private Shared Sub DropIfExistsAndCreateTable(table As SQLCreateTable)
-
-        Using connection As New ConnectionScope(database)
-            If connection.Execute(New SQLTableExists(table.Name)).Read Then
-                connection.Execute(New SQLDropTable(table.Name))
-            End If
-            connection.Execute(table)
-        End Using
+		database.RecreateTable(MainCollection(Of IDatabaseObject).TableSchema)
+		database.RecreateTable(ForeignCollection.TableSchema)
+		database.RecreateTable(Foreign2Collection.TableSchema)
 
     End Sub
 

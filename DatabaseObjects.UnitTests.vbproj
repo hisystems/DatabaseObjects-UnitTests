@@ -89,6 +89,7 @@
     <Compile Include="Database\DatabaseObjectsTableJoinsTests.vb" />
     <Compile Include="Database\DatabaseObjectLockControllerTests.vb" />
     <Compile Include="Database\ItemInstanceTests.vb" />
+    <Compile Include="Library\DatabaseExtensions.vb" />
     <Compile Include="Library\SimpleDatabaseObjectVolatile.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileUsingAttributes.vb" />
     <Compile Include="Library\Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.vb" />

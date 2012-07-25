@@ -19,18 +19,6 @@ Public Class DatabaseObjectsAutoAssignmentTests
 
     End Sub
 
-    Private Sub EnsureTableExists(createTable As SQLCreateTable)
-
-        Using connection = New ConnectionScope(_database)
-            If connection.Execute(New SQLTableExists(createTable.Name)).Read Then
-                connection.Execute(New SQLDropTable(createTable.Name))
-            End If
-
-            connection.Execute(createTable)
-        End Using
-
-    End Sub
-
     <Table(CollectionWithAutoIncrementDistinctField.Name)>
     <DistinctField("PrimaryField", FieldValueAutoAssignmentType.AutoIncrement)>
     Public Class CollectionWithAutoIncrementDistinctField
@@ -191,7 +179,7 @@ Public Class DatabaseObjectsAutoAssignmentTests
     <TestCategory("DatabaseObjectsCollections")>
     Public Sub AutoIncrementField()
 
-        EnsureTableExists(CollectionWithAutoIncrementDistinctField.TableSchema)
+		_database.RecreateTable(CollectionWithAutoIncrementDistinctField.TableSchema)
 
         Dim collection As New CollectionWithAutoIncrementDistinctField(_database)
         Dim item = collection.Add
@@ -205,7 +193,7 @@ Public Class DatabaseObjectsAutoAssignmentTests
     <TestCategory("DatabaseObjectsCollections")>
     Public Sub AutoIncrementFieldUsingOverride()
 
-        EnsureTableExists(CollectionWithAutoIncrementDistinctFieldUsingOverrides.TableSchema)
+		_database.RecreateTable(CollectionWithAutoIncrementDistinctFieldUsingOverrides.TableSchema)
 
         Dim collection As New CollectionWithAutoIncrementDistinctFieldUsingOverrides(_database)
         Dim item = collection.Add
@@ -219,7 +207,7 @@ Public Class DatabaseObjectsAutoAssignmentTests
     <TestCategory("DatabaseObjectsCollections")>
     Public Sub NoAutoAssignmentField()
 
-        EnsureTableExists(CollectionWithNoAutoAssignmentField.TableSchema)
+		_database.RecreateTable(CollectionWithNoAutoAssignmentField.TableSchema)
 
         Dim collection As New CollectionWithNoAutoAssignmentField(_database)
         Dim item = collection.Add
@@ -233,7 +221,7 @@ Public Class DatabaseObjectsAutoAssignmentTests
     <TestCategory("DatabaseObjectsCollections")>
     Public Sub UniqueIdentifierAutoAssignmentField()
 
-        EnsureTableExists(CollectionWithUniqueIdentifierAutoAssignmentField.TableSchema)
+		_database.RecreateTable(CollectionWithUniqueIdentifierAutoAssignmentField.TableSchema)
 
         Dim collection As New CollectionWithUniqueIdentifierAutoAssignmentField(_database)
         Dim item = collection.Add

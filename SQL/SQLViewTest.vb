@@ -10,18 +10,12 @@ Public Class SQLViewTest
     <DatabaseTestInitialize()>
     Public Sub DatabaseTestInitialize(database As Database)
 
-        Using connection = New ConnectionScope(database)
-            If Not connection.Execute(New SQLTableExists("Table1")).Read Then
-                Dim createTable As New SQLCreateTable
-                createTable.Name = "Table1"
-                createTable.Fields.Add("Field1", DataType.Integer)
-				connection.Execute(createTable)
-            End If
+        Dim createTable As New SQLCreateTable
+        createTable.Name = "Table1"
+        createTable.Fields.Add("Field1", DataType.Integer)
 
-            If connection.Execute(New SQLViewExists("View1")).Read Then
-                connection.Execute(New SQLDropView("View1"))
-            End If
-        End Using
+        database.RecreateTable(createTable)
+        database.DropViewIfExists("View1")
 
     End Sub
 

@@ -27,18 +27,6 @@ Public Class SimpleDatabaseObjectsVolatileTests
 
     End Sub
 
-    Private Sub EnsureTableExists(createTable As SQLCreateTable)
-
-        Using connection = New ConnectionScope(_database)
-            If connection.Execute(New SQLTableExists(createTable.Name)).Read Then
-                connection.Execute(New SQLDropTable(createTable.Name))
-            End If
-
-            connection.Execute(createTable)
-        End Using
-
-    End Sub
-
     <TestInitialize()>
     Public Sub TestInitialize()
 
@@ -47,8 +35,8 @@ Public Class SimpleDatabaseObjectsVolatileTests
                 TestContext.WriteLine(statement.SQL)
             End Sub
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema())
-        EnsureTableExists(Generic.SimpleDatabaseObjectsVolatile.TableSchema())
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema())
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsVolatile.TableSchema())
 
         Dim newItem1 = _collection.Add
         newItem1.Field1 = "Field1-BBB"

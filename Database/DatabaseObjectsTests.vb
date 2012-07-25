@@ -19,18 +19,6 @@ Public Class DatabaseObjectsTests
 
     End Sub
 
-    Private Sub EnsureTableExists(createTable As SQLCreateTable)
-
-        Using connection = New ConnectionScope(_database)
-            If connection.Execute(New SQLTableExists(createTable.Name)).Read Then
-                connection.Execute(New SQLDropTable(createTable.Name))
-            End If
-
-            connection.Execute(createTable)
-        End Using
-
-    End Sub
-
     <TestInitialize()>
     Public Sub TestInitialize()
 
@@ -112,8 +100,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub SimpleDatabaseObjectsVolatileInitializeWithRootContainer()
 
-        EnsureTableExists(SimpleDatabaseObjectsVolatile.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(SimpleDatabaseObjectsVolatile.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
         Dim parentItem = parentCollection.Add
@@ -130,8 +118,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub SimpleDatabaseObjectsVolatileInitializeWithDatabase()
 
-        EnsureTableExists(SimpleDatabaseObjectsVolatile.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(SimpleDatabaseObjectsVolatile.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
         Dim parentItem = parentCollection.Add
@@ -148,8 +136,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub SimpleDatabaseObjectsVolatileUsingAttributesInitializeWithRootContainer()
 
-        EnsureTableExists(SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
         Dim parentItem = parentCollection.Add
@@ -166,8 +154,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub SimpleDatabaseObjectsVolatileUsingAttributesInitializeWithDatabase()
 
-        EnsureTableExists(SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
         Dim parentItem = parentCollection.Add
@@ -256,8 +244,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub Generic_SimpleDatabaseObjectsVolatileInitializeWithRootContainer()
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsVolatile.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsVolatile.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
         Dim parentItem = parentCollection.Add
@@ -274,8 +262,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub Generic_SimpleDatabaseObjectsVolatileInitializeWithDatabase()
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsVolatile.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsVolatile.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
         Dim parentItem = parentCollection.Add
@@ -292,8 +280,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub Generic_SimpleDatabaseObjectsVolatileUsingAttributesInitializeWithRootContainer()
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
         Dim parentItem = parentCollection.Add
@@ -310,8 +298,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub Generic_SimpleDatabaseObjectsVolatileUsingAttributesInitializeWithDatabase()
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsVolatileUsingAttributes.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
         Dim parentItem = parentCollection.Add
@@ -500,8 +488,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub Generic_SimpleDatabaseObjectsVolatileListInitializeWithRootContainer()
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileList.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsVolatileList.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
         Dim parentItem = parentCollection.Add
@@ -518,8 +506,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub Generic_SimpleDatabaseObjectsVolatileListInitializeWithDatabase()
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileList.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsVolatileList.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
         Dim parentItem = parentCollection.Add
@@ -536,8 +524,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub Generic_SimpleDatabaseObjectsVolatileListUsingAttributesInitializeWithRootContainer()
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_rootContainer)
         Dim parentItem = parentCollection.Add
@@ -554,8 +542,8 @@ Public Class DatabaseObjectsTests
     <TestCategory("RootContainer"), TestCategory("DatabaseObjectsCollections")>
     Public Sub Generic_SimpleDatabaseObjectsVolatileListUsingAttributesInitializeWithDatabase()
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.TableSchema)
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsVolatileListUsingAttributes.TableSchema)
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema)
 
         Dim parentCollection As New Generic.SimpleDatabaseObjectsListKeyed(_database)
         Dim parentItem = parentCollection.Add

@@ -29,14 +29,10 @@ Public Class MySQLTests
         testTable.Name = "MySQLTestTable"
         testTable.Fields.Add("BooleanField", DataType.Boolean)
 
+		database.RecreateTable(testTable)
+
         Using connection As New ConnectionScope(database)
-            If connection.Execute(New SQLTableExists(testTable.Name)).Read Then
-                connection.Execute(New SQLDropTable(testTable.Name))
-            End If
-
-            connection.ExecuteNonQuery(testTable)
-
-            Dim insert As New SQLInsert
+			Dim insert As New SQLInsert
             insert.TableName = testTable.Name
             insert.Fields.Add("BooleanField", True)
             connection.ExecuteNonQuery(insert)

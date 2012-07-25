@@ -260,21 +260,9 @@ Public Class DatabaseObjectsTableJoinsTests
                 TestContext.WriteLine(statement.SQL)
             End Sub
 
-        EnsureTableExists(TestCollection.TableSchema)
-        EnsureTableExists(TestReferenceCollection.TableSchema)
-        EnsureTableExists(TestReferenceCollection2.TableSchema)
-
-    End Sub
-
-    Private Sub EnsureTableExists(createTable As SQLCreateTable)
-
-        Using connection = New ConnectionScope(_database)
-            If connection.Execute(New SQLTableExists(createTable.Name)).Read Then
-                connection.Execute(New SQLDropTable(createTable.Name))
-            End If
-
-            connection.Execute(createTable)
-        End Using
+		_database.RecreateTable(TestCollection.TableSchema)
+		_database.RecreateTable(TestReferenceCollection.TableSchema)
+		_database.RecreateTable(TestReferenceCollection2.TableSchema)
 
     End Sub
 

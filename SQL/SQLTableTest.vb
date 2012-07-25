@@ -8,11 +8,7 @@ Public Class SQLTableTest
     <DatabaseTestInitialize()>
     Public Sub DatabaseTestInitialize(database As Database)
 
-        Using connection = New ConnectionScope(database)
-            If connection.Execute(New SQLTableExists("Table1")).Read Then
-                connection.Execute(New SQLDropTable("Table1"))
-            End If
-        End Using
+        database.DropTableIfExists("Table1")
 
     End Sub
 
@@ -254,19 +250,19 @@ Public Class SQLTableTest
 
     End Sub
 
-	<TestMethod()>
-	<TestCategory("SQL"), TestCategory("TableSchema")>
-	Public Sub AlterTableFieldsIndexderByName()
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("TableSchema")>
+    Public Sub AlterTableFieldsIndexderByName()
 
-		Dim alterTable As New SQLAlterTable
-		alterTable.Name = "Table1"
-		Dim field1 = alterTable.Fields("Field1")
-		Dim field2 = alterTable.Fields("Field2")
-		field1.KeyType = KeyType.Primary
+        Dim alterTable As New SQLAlterTable
+        alterTable.Name = "Table1"
+        Dim field1 = alterTable.Fields("Field1")
+        Dim field2 = alterTable.Fields("Field2")
+        field1.KeyType = KeyType.Primary
 
-		Dim field1Reloaded = alterTable.Fields("Field1")
-		Assert.AreEqual(KeyType.Primary, field1Reloaded.KeyType)
+        Dim field1Reloaded = alterTable.Fields("Field1")
+        Assert.AreEqual(KeyType.Primary, field1Reloaded.KeyType)
 
-	End Sub
+    End Sub
 
 End Class

@@ -27,18 +27,6 @@ Public Class SimpleDatabaseObjectsListKeyedTests
 
     End Sub
 
-    Private Sub EnsureTableExists(createTable As SQLCreateTable)
-
-        Using connection = New ConnectionScope(_database)
-            If connection.Execute(New SQLTableExists(createTable.Name)).Read Then
-                connection.Execute(New SQLDropTable(createTable.Name))
-            End If
-
-            connection.Execute(createTable)
-        End Using
-
-    End Sub
-
     <TestInitialize()>
     Public Sub TestInitialize()
 
@@ -47,7 +35,7 @@ Public Class SimpleDatabaseObjectsListKeyedTests
                 TestContext.WriteLine(statement.SQL)
             End Sub
 
-        EnsureTableExists(Generic.SimpleDatabaseObjectsListKeyed.TableSchema())
+		_database.RecreateTable(Generic.SimpleDatabaseObjectsListKeyed.TableSchema())
 
         Dim newItem = _collection.Add
         newItem.Field1 = "Field1-CCC"

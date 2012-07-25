@@ -8,17 +8,12 @@ Public Class SQLIndexTests
     <DatabaseTestInitialize()>
     Public Sub DatabaseTestInitialize(database As Database)
 
-        Using connection = New ConnectionScope(database)
-            If connection.Execute(New SQLTableExists("Table1")).Read Then
-                connection.Execute(New SQLDropTable("Table1"))
-            End If
+        Dim createTable As New SQLCreateTable
+        createTable.Name = "Table1"
+        createTable.Fields.Add("Field1", DataType.Integer)
+        createTable.Fields.Add("Field2", DataType.Integer)
 
-            Dim createTable As New SQLCreateTable
-            createTable.Name = "Table1"
-            createTable.Fields.Add("Field1", DataType.Integer)
-            createTable.Fields.Add("Field2", DataType.Integer)
-            connection.Execute(createTable)
-        End Using
+        database.RecreateTable(createTable)
 
     End Sub
 
