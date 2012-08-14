@@ -146,6 +146,7 @@
     <Compile Include="SQL\SQLBitwiseExpressionTest.vb" />
     <Compile Include="SQL\SQLFunctionExpression.vb" />
     <Compile Include="SQL\SQLSelectTableJoins.vb" />
+    <Compile Include="SQL\SQLLogicalExpressionTests.vb" />
     <Compile Include="UnitTestExtensions\DatabaseTestExtensionTesting.vb" />
   </ItemGroup>
   <ItemGroup>
