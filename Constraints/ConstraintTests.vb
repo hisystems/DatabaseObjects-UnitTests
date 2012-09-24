@@ -143,4 +143,43 @@ Public Class ConstraintTests
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("Constraint")>
+    Public Sub StringMaxLength()
+
+        Dim constraint As New Constraints.StringMaxLengthConstraint(intMaxLength:=5)
+
+        Assert.IsTrue(DirectCast(constraint, Constraints.IConstraint(Of String)).ValueSatisfiesConstraint("12345"))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Constraint")>
+    Public Sub StringMaxLengthWhenEmpty()
+
+        Dim constraint As New Constraints.StringMaxLengthConstraint(intMaxLength:=5)
+
+        Assert.IsTrue(DirectCast(constraint, Constraints.IConstraint(Of String)).ValueSatisfiesConstraint(""))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Constraint")>
+    Public Sub StringMaxLengthWhenNull()
+
+        Dim constraint As New Constraints.StringMaxLengthConstraint(intMaxLength:=5)
+
+        Assert.IsTrue(DirectCast(constraint, Constraints.IConstraint(Of String)).ValueSatisfiesConstraint(Nothing))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Constraint")>
+    Public Sub StringMaxLengthFails()
+
+        Dim constraint As New Constraints.StringMaxLengthConstraint(intMaxLength:=5)
+
+        Assert.IsFalse(DirectCast(constraint, Constraints.IConstraint(Of String)).ValueSatisfiesConstraint("123456"))
+
+    End Sub
 End Class
