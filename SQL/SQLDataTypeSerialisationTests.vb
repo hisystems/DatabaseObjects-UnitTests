@@ -17,7 +17,7 @@ Public Class SQLDataTypeSerialisationTests
         insert.ConnectionType = Database.ConnectionType.SQLServer
         insert.Fields.Add("DateTimeField", dateAndTime)
 
-        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02 03:04:05.006')", insert.SQL)
+        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02 03:04:05.0060000')", insert.SQL)
 
     End Sub
 
@@ -32,7 +32,23 @@ Public Class SQLDataTypeSerialisationTests
         insert.ConnectionType = Database.ConnectionType.SQLServer
         insert.Fields.Add("DateTimeField", dateAndTime)
 
-        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02 00:00:00.006')", insert.SQL)
+        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02 00:00:00.0060000')", insert.SQL)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
+    Public Sub NanoSecondPrecision()
+
+        Dim dateAndTime As New DateTime(2000, 1, 1)
+        dateAndTime = dateAndTime.AddTicks(1234567)
+
+        Dim insert As New SQLInsert
+        insert.TableName = "Table"
+        insert.ConnectionType = Database.ConnectionType.SQLServer
+        insert.Fields.Add("DateTimeField", dateAndTime)
+
+        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-01 00:00:00.1234567')", insert.SQL)
 
     End Sub
 
