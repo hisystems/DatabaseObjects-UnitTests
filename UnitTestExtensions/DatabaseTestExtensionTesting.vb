@@ -101,3 +101,17 @@ Public Class DatabaseTestExtensionTestingOnlySQLServer
     End Sub
 
 End Class
+
+
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase"})>
+Public Class DatabaseTestExtensionFailure
+
+    <TestMethod()>
+    <ExpectedException(GetType(ApplicationException))>
+    Public Sub TestMethodFails(database As Database)
+
+        Throw New ApplicationException
+
+    End Sub
+
+End Class
