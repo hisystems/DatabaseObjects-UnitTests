@@ -111,14 +111,15 @@ Public Class FieldMappingTests
 
 	<TestMethod()>
 	<TestCategory("Database")>
-	Public Sub ObjectByDistinctValueExists(database As Database)
+	Public Sub FieldMappingAllDataTypes(database As Database)
 
 		Dim table = New FieldMappingTestCollection(database)
 		Dim newItem As FieldMappingTestItem = table.Add
 
 		newItem.BooleanField = True
 		newItem.CharacterField = "c"c
-		newItem.DateTimeField = New DateTime(2000, 1, 2, 3, 4, 5, 6)
+		'Some databases do not store milliseconds. Ensure that the date and time parts are reloaded correctly.
+		newItem.DateTimeField = New DateTime(2000, 1, 2, 3, 4, 5)
 		newItem.DecimalField = 123456789
 		newItem.FloatField = 123.123
 		newItem.ImageField = New Byte() {1, 2, 3, 4}
@@ -129,7 +130,8 @@ Public Class FieldMappingTests
 		Dim reloaded = table(DirectCast(newItem, IDatabaseObject).DistinctValue)
 
 		Assert.AreEqual(newItem.BooleanField, reloaded.BooleanField)
-		Assert.AreEqual(newItem.CharacterField, reloaded.CharacterField)
+		'Some databases return / populate a CHAR field as spaces so Trim the returned object.
+		Assert.AreEqual(newItem.CharacterField, reloaded.CharacterField.TrimEnd)
 		Assert.AreEqual(newItem.DateTimeField, reloaded.DateTimeField)
 		Assert.AreEqual(newItem.DecimalField, reloaded.DecimalField)
 		Assert.AreEqual(newItem.FloatField, reloaded.FloatField)
