@@ -7,7 +7,7 @@ Imports DatabaseObjects.SQL
 Imports DatabaseObjects.Exceptions
 Imports DatabaseObjects.UnitTestExtensions
 
-<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase"})>
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase", "MicrosoftAccessTestDatabase", "SQLServerCETestDatabase"})>
 Public Class FieldMappingTests
 
 	<Table(FieldMappingTestCollection.Name)>

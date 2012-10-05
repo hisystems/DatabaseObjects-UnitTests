@@ -2,7 +2,7 @@
 Imports DatabaseObjects.SQL
 Imports DatabaseObjects.UnitTestExtensions
 
-<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase"})>
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase", "MicrosoftAccessTestDatabase", "SQLServerCETestDatabase"})>
 Public Class SQLTableTest
 
 	<DatabaseTestInitialize()>
@@ -40,7 +40,8 @@ Public Class SQLTableTest
 		insert.TableName = "Table1"
 		insert.Fields.Add("Boolean", True)
 		insert.Fields.Add("Character", "A"c)
-		insert.Fields.Add("DateTime", DateTime.Now)
+		'Some databases do not support milliseconds.
+		insert.Fields.Add("DateTime", New DateTime(2000, 1, 2, 3, 4, 5))
 		insert.Fields.Add("Decimal", 1234567890.123)
 		insert.Fields.Add("Float", 1234567890.123)
 		insert.Fields.Add("Money", 123456789012345)
