@@ -1,70 +1,106 @@
 ﻿Imports System.Text
 Imports DatabaseObjects.SQL
+Imports DatabaseObjects.UnitTestExtensions
 
-<TestClass()>
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase"})>
 Public Class SQLDataTypeSerialisationTests
 
-    Public TestContext As TestContext
+	Public Property TestContext As TestContext
 
-    <TestMethod()>
-    <TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
-    Public Sub DateAndTime()
+	<DatabaseTestInitialize()>
+	Public Sub DatabaseTestInitialize(database As Database)
 
-        Dim dateAndTime As New DateTime(2000, 1, 2, 3, 4, 5, 6)
+		AddHandler database.Connection.StatementExecuted, _
+		  Sub(statement As ISQLStatement)
+			  TestContext.WriteLine(statement.SQL)
+		  End Sub
 
-        Dim insert As New SQLInsert
-        insert.TableName = "Table"
-        insert.ConnectionType = Database.ConnectionType.SQLServer
-        insert.Fields.Add("DateTimeField", dateAndTime)
+		database.DropTableIfExists("TableWithDates")
 
-        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02 03:04:05.0060000')", insert.SQL)
+		Dim createTable As New SQLCreateTable
+		createTable.Name = "TableWithDates"
+		createTable.Fields.Add("DateTimeField", DataType.DateTime)
 
-    End Sub
+		Using connection = New ConnectionScope(database)
+			connection.Execute(createTable)
+		End Using
 
-    <TestMethod()>
-    <TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
-    Public Sub DateAndTimeWithOnlyMilliseconds()
+	End Sub
 
-        Dim dateAndTime As New DateTime(2000, 1, 2, Hour:=0, Minute:=0, Second:=0, millisecond:=6)
+	<TestMethod()>
+	<TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
+	Public Sub DateAndTime()
 
-        Dim insert As New SQLInsert
-        insert.TableName = "Table"
-        insert.ConnectionType = Database.ConnectionType.SQLServer
-        insert.Fields.Add("DateTimeField", dateAndTime)
+		Dim dateAndTime As New DateTime(2000, 1, 2, 3, 4, 5, 6)
 
-        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02 00:00:00.0060000')", insert.SQL)
+		Dim insert As New SQLInsert
+		insert.TableName = "Table"
+		insert.ConnectionType = Database.ConnectionType.SQLServer
+		insert.Fields.Add("DateTimeField", dateAndTime)
 
-    End Sub
+		Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02 03:04:05.006')", insert.SQL)
 
-    <TestMethod()>
-    <TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
-    Public Sub NanoSecondPrecision()
+	End Sub
 
-        Dim dateAndTime As New DateTime(2000, 1, 1)
-        dateAndTime = dateAndTime.AddTicks(1234567)
+	<TestMethod()>
+	<TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
+	Public Sub DateAndTimeWithOnlyMilliseconds()
 
-        Dim insert As New SQLInsert
-        insert.TableName = "Table"
-        insert.ConnectionType = Database.ConnectionType.SQLServer
-        insert.Fields.Add("DateTimeField", dateAndTime)
+		Dim dateAndTime As New DateTime(2000, 1, 2, Hour:=0, Minute:=0, Second:=0, millisecond:=6)
 
-        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-01 00:00:00.1234567')", insert.SQL)
+		Dim insert As New SQLInsert
+		insert.TableName = "Table"
+		insert.ConnectionType = Database.ConnectionType.SQLServer
+		insert.Fields.Add("DateTimeField", dateAndTime)
 
-    End Sub
+		Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02 00:00:00.006')", insert.SQL)
 
-    <TestMethod()>
-    <TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
-    Public Sub DateAndNoTime()
+	End Sub
 
-        Dim dateAndTime As New DateTime(2000, 1, 2)
+	<TestMethod()>
+	<TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
+	Public Sub DateTimeWithFractionalSeconds(database As Database)
 
-        Dim insert As New SQLInsert
-        insert.TableName = "Table"
-        insert.ConnectionType = Database.ConnectionType.SQLServer
-        insert.Fields.Add("DateTimeField", dateAndTime)
+		Dim dateAndTime As New DateTime(2000, 1, 1)
 
-        Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02')", insert.SQL)
+		Select Case database.Connection.Type
+			Case Global.DatabaseObjects.Database.ConnectionType.MicrosoftAccess
+				'Does not support milliseconds
+			Case Global.DatabaseObjects.Database.ConnectionType.MySQL
+				'Does not support milliseconds (unless running 5.6.4+) 
+			Case Global.DatabaseObjects.Database.ConnectionType.SQLite
+				'Supports nano-seconds
+				dateAndTime = dateAndTime.AddTicks(1234567)
+			Case Else
+				dateAndTime = dateAndTime.AddMilliseconds(123)
+		End Select
 
-    End Sub
+		Dim insert As New SQLInsert
+		insert.TableName = "TableWithDates"
+		insert.ConnectionType = database.ConnectionType.SQLite
+		insert.Fields.Add("DateTimeField", dateAndTime)
+
+		Using connection = New ConnectionScope(database)
+			connection.Execute(insert)
+
+			Assert.AreEqual(dateAndTime, connection.ExecuteScalar(New SQLSelect("TableWithDates")))
+		End Using
+
+	End Sub
+
+	<TestMethod()>
+	<TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
+	Public Sub DateAndNoTime()
+
+		Dim dateAndTime As New DateTime(2000, 1, 2)
+
+		Dim insert As New SQLInsert
+		insert.TableName = "Table"
+		insert.ConnectionType = Database.ConnectionType.SQLServer
+		insert.Fields.Add("DateTimeField", dateAndTime)
+
+		Assert.AreEqual(Of String)("INSERT INTO [Table] ([DateTimeField]) VALUES ('2000-01-02')", insert.SQL)
+
+	End Sub
 
 End Class
