@@ -181,5 +181,30 @@ Public Class ConstraintTests
 
         Assert.IsFalse(DirectCast(constraint, Constraints.IConstraint(Of String)).ValueSatisfiesConstraint("123456"))
 
-    End Sub
+	End Sub
+
+	<TestMethod()>
+	<TestCategory("Constraint")>
+	Public Sub ObjectIsSaved()
+
+		Dim savedObject As New TestDatabaseObject
+		savedObject.IsSaved = True
+
+		Dim constraint As New Constraints.ObjectIsSavedConstraint()
+		Assert.IsTrue(constraint.ValueSatisfiesConstraint(savedObject))
+
+	End Sub
+
+	<TestMethod()>
+	<TestCategory("Constraint")>
+	Public Sub ObjectIsUnsaved()
+
+		Dim unsavedObject As New TestDatabaseObject
+		unsavedObject.IsSaved = False
+
+		Dim constraint As New Constraints.ObjectIsSavedConstraint()
+		Assert.IsFalse(constraint.ValueSatisfiesConstraint(unsavedObject))
+
+	End Sub
+
 End Class

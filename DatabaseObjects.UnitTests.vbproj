@@ -122,6 +122,7 @@
     <Compile Include="Library\SimpleDatabaseObject.vb" />
     <Compile Include="Library\SimpleTable.vb" />
     <Compile Include="Library\SimpleDatabaseObjects.vb" />
+    <Compile Include="Library\TestDatabaseObject.vb" />
     <Compile Include="Library\TestRootContainer.vb" />
     <Compile Include="Misc\AssemblyInfo.vb" />
     <Compile Include="Database\DatabaseTests.vb" />
