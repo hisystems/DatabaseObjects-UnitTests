@@ -16,6 +16,7 @@ Public Class ObjectReferenceBindingTests
 
         Public ReadOnly ForeignObjects As ForeignCollection
         Public ReadOnly Foreign2Objects As Foreign2Collection
+        Public ReadOnly ForeignDoubleLinksObjects As ForeignDoubleLinkCollection
 
         Public Sub New(database As Database)
 
@@ -23,6 +24,7 @@ Public Class ObjectReferenceBindingTests
 
             ForeignObjects = New ForeignCollection(Me)
             Foreign2Objects = New Foreign2Collection(Me)
+            ForeignDoubleLinksObjects = New ForeignDoubleLinkCollection(Me)
 
         End Sub
 
@@ -426,6 +428,103 @@ Public Class ObjectReferenceBindingTests
 
     End Class
 
+    <Table(ForeignDoubleLinkCollection.Name)>
+    <DistinctField("ForeignDoubleLinkID", FieldValueAutoAssignmentType.AutoIncrement)>
+    Private Class ForeignDoubleLinkCollection
+        Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of ForeignDoubleLinkItem)
+
+        Friend Const Name As String = "ForeignDoubleLinkTable"
+
+        Friend Sub New(container As RootContainer)
+
+            MyBase.New(container)
+
+        End Sub
+
+        Friend Shared Function TableSchema() As SQLCreateTable
+
+            Dim createTable As New SQLCreateTable
+
+            createTable.Name = Name
+
+            With createTable.Fields.Add("ForeignDoubleLinkID", DataType.Integer)
+                .KeyType = KeyType.Primary
+                .AutoIncrements = True
+            End With
+
+            createTable.Fields.Add("ForeignID", DataType.Integer)
+
+            Return createTable
+
+        End Function
+
+    End Class
+
+    ''' <summary>
+    ''' Represents a "foreign" referenced object which itself also references another "foreign" object.
+    ''' </summary>
+    Private Class ForeignDoubleLinkItem
+        Inherits DatabaseObject
+
+        ''' <summary>
+        ''' This object also references another object for which a table join is required.
+        ''' </summary>
+        <ObjectReferenceEarlyBinding()>
+        <FieldMapping("ForeignID")>
+        Public Reference As Global.DatabaseObjects.Generic.ObjectReference(Of ForeignItem)
+
+        Friend Sub New(parent As ForeignDoubleLinkCollection)
+
+            MyBase.New(parent)
+
+            Reference = New Global.DatabaseObjects.Generic.ObjectReference(Of ForeignItem)(MyBase.RootContainer(Of ObjectReferenceRootContainer).ForeignObjects)
+
+        End Sub
+
+        Public Shadows Sub Save()
+
+            MyBase.Save()
+
+        End Sub
+
+    End Class
+
+    Private Class MainCollectionForDoubleLink
+        Inherits MainCollection(Of MainItemForDoubleLink)
+
+        Friend Sub New(container As RootContainer)
+
+            MyBase.New(container)
+
+        End Sub
+
+    End Class
+
+    Private Class MainItemForDoubleLink
+        Inherits MainItem
+
+        <FieldMapping("ForeignID")> _
+        <ObjectReferenceEarlyBinding()> _
+        Public ForeignObject As Global.DatabaseObjects.Generic.ObjectReference(Of ForeignDoubleLinkItem)
+
+        <FieldMapping("Foreign2ID")> _
+        <ObjectReferenceEarlyBinding()> _
+        Public Foreign2Object As Global.DatabaseObjects.Generic.ObjectReference(Of Foreign2Item)
+
+        Friend Sub New(parent As MainCollectionForDoubleLink)
+
+            MyBase.New(parent)
+
+            'Initialize the ObjectReference with the associated foreign objects collection from which the object will be sourced
+            Me.ForeignObject = New Global.DatabaseObjects.Generic.ObjectReference(Of ForeignDoubleLinkItem)(MyBase.RootContainer(Of ObjectReferenceRootContainer).ForeignDoubleLinksObjects)
+
+            'Initialize the ObjectReference with the associated foreign objects collection from which the object will be sourced
+            Me.Foreign2Object = New Global.DatabaseObjects.Generic.ObjectReference(Of Foreign2Item)(MyBase.RootContainer(Of ObjectReferenceRootContainer).Foreign2Objects)
+
+        End Sub
+
+    End Class
+
     ''' <summary>
     ''' The MainItemUsingUsingEarlyBindingWithNoFieldMapping is invalid because there is no FieldMapping on
     ''' on the field.
@@ -476,9 +575,10 @@ Public Class ObjectReferenceBindingTests
             End Sub
 
         'Clear the main collection database table
-		database.RecreateTable(MainCollection(Of IDatabaseObject).TableSchema)
-		database.RecreateTable(ForeignCollection.TableSchema)
-		database.RecreateTable(Foreign2Collection.TableSchema)
+        database.RecreateTable(MainCollection(Of IDatabaseObject).TableSchema)
+        database.RecreateTable(ForeignCollection.TableSchema)
+        database.RecreateTable(Foreign2Collection.TableSchema)
+        database.RecreateTable(ForeignDoubleLinkCollection.TableSchema)
 
     End Sub
 
@@ -591,7 +691,7 @@ Public Class ObjectReferenceBindingTests
         foreign2Item.Save()
 
         Dim mainCollectionUsingEarlyBindingAndTwoForeignReferences As New MainCollectionUsingEarlyBindingAndTwoForeignReferences(rootContainer)
-        Dim mainItem = MainCollectionUsingEarlyBindingAndTwoForeignReferences.Add()
+        Dim mainItem = mainCollectionUsingEarlyBindingAndTwoForeignReferences.Add()
         mainItem.ForeignObject.Object = foreignItem
         mainItem.Foreign2Object.Object = foreign2Item
         mainItem.Save()
@@ -644,6 +744,53 @@ Public Class ObjectReferenceBindingTests
         Assert.AreEqual(foreign2Item, mainItemReloaded.Foreign2Object.Object)
         Assert.AreEqual(foreign2Item.Description, mainItemReloaded.Foreign2Object.Object.Description)
         'Ensure that accessing the foreign objects was not using lazy loading
+        Assert.AreEqual(1, sqlStatementCount)
+
+    End Sub
+
+    ''' <summary>
+    ''' Tests a double link / double hop from one reference object to another reference object therefore joining two tables.
+    ''' Theoretically, this should allow n number of hops.
+    ''' Also ensures that table joins for other object references in the main collection are also joined.
+    ''' So, it is essentially checking that 
+    ''' </summary>
+    <TestMethod()>
+    <TestCategory("Database"), TestCategory("ObjectReference")>
+    Public Sub EarlyBindingWithDoubleLinkForeignReferences()
+
+        Dim rootContainer As New ObjectReferenceRootContainer(database)
+
+        Dim foreignItem As ForeignItem = rootContainer.ForeignObjects.Add
+        foreignItem.Name = "ForeignName"
+        foreignItem.Save()
+
+        Dim foreign2Item As Foreign2Item = rootContainer.Foreign2Objects.Add
+        foreign2Item.Description = "Foreign2Description"
+        foreign2Item.Save()
+
+        Dim foreignDoubleLinkItem As ForeignDoubleLinkItem = rootContainer.ForeignDoubleLinksObjects.Add()
+        foreignDoubleLinkItem.Reference.Object = foreignItem
+        foreignDoubleLinkItem.Save()
+
+        Dim mainCollectionForDoubleLink As New MainCollectionForDoubleLink(rootContainer)
+        Dim mainItem = mainCollectionForDoubleLink.Add()
+        mainItem.ForeignObject.Object = foreignDoubleLinkItem
+        mainItem.Foreign2Object.Object = foreign2Item
+        mainItem.Save()
+
+        Dim sqlStatementCount As Integer
+        AddHandler database.Connection.StatementExecuted, Sub() sqlStatementCount += 1
+
+        Dim mainItemReloaded = mainCollectionForDoubleLink.First()
+
+        'One statement will be executed to retrieve the two foreign objects via two table joins
+        Assert.AreEqual(1, sqlStatementCount)
+        Assert.AreEqual(foreignDoubleLinkItem, mainItemReloaded.ForeignObject.Object)
+        Assert.AreEqual(foreign2Item, mainItemReloaded.Foreign2Object.Object)
+        Assert.AreEqual("Foreign2Description", mainItemReloaded.Foreign2Object.Object.Description)
+        Assert.AreEqual(foreignItem, mainItemReloaded.ForeignObject.Object.Reference.Object)
+        Assert.AreEqual("ForeignName", mainItemReloaded.ForeignObject.Object.Reference.Object.Name)
+        'Ensure that accessing the foreign objects were not using lazy loading
         Assert.AreEqual(1, sqlStatementCount)
 
     End Sub
