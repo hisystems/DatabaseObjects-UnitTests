@@ -131,4 +131,15 @@ Public Class SQLSelectTests
 
 	End Sub
 
+	<TestMethod()>
+	<TestCategory("SQL"), TestCategory("SQLSelect")>
+	Public Sub SelectWithTableNameAndCondition()
+
+		Dim condition As New SQLCondition("Field", ComparisonOperator.EqualTo, 1)
+		Dim selectStatement As New SQLSelect("Table", condition)
+
+		Assert.AreEqual("SELECT * FROM [Table] WHERE [Field] = 1", selectStatement.SQL)
+
+	End Sub
+
 End Class
