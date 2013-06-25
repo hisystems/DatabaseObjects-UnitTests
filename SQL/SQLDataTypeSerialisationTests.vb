@@ -77,7 +77,7 @@ Public Class SQLDataTypeSerialisationTests
 
 		Dim insert As New SQLInsert
 		insert.TableName = "TableWithDates"
-		insert.ConnectionType = database.ConnectionType.SQLite
+		insert.ConnectionType = database.Connection.Type
 		insert.Fields.Add("DateTimeField", dateAndTime)
 
 		Using connection = New ConnectionScope(database)
