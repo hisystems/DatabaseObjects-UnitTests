@@ -118,4 +118,22 @@ Public Class SQLDataTypeSerialisationTests
 
 	End Sub
 
+	Private Enum TestEnum
+		Value1 = 1
+		Value2 = 2
+	End Enum
+
+	<TestMethod()>
+	<TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
+	Public Sub SerializeEnumValueAsInteger()
+
+		Dim insert As New SQLInsert
+		insert.TableName = "Table"
+		insert.ConnectionType = Database.ConnectionType.SQLServer
+		insert.Fields.Add("EnumValue", TestEnum.Value1)
+
+		Assert.AreEqual(Of String)("INSERT INTO [Table] ([EnumValue]) VALUES (1)", insert.SQL)
+
+	End Sub
+
 End Class

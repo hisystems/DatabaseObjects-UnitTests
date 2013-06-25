@@ -47,6 +47,7 @@ Public Class FieldMappingTests
 			createTable.Fields.Add("Money", DataType.Money)
 			createTable.Fields.Add("Text", DataType.Text)
 			createTable.Fields.Add("Image", DataType.Image)
+			createTable.Fields.Add("EnumValue", DataType.Integer)
 
 			Return createTable
 
@@ -56,6 +57,11 @@ Public Class FieldMappingTests
 
 	Private Class FieldMappingTestItem
 		Inherits DatabaseObject
+
+		Public Enum EnumTest
+			Value1 = 1
+			Value2 = 2
+		End Enum
 
 		<FieldMapping("Boolean")>
 		Public BooleanField As Boolean
@@ -80,6 +86,9 @@ Public Class FieldMappingTests
 
 		<FieldMapping("Image")>
 		Public ImageField As Byte()
+
+		<FieldMapping("EnumValue")>
+		Public EnumValue As EnumTest
 
 		Friend Sub New(parent As FieldMappingTestCollection)
 
@@ -125,6 +134,7 @@ Public Class FieldMappingTests
 		newItem.ImageField = New Byte() {1, 2, 3, 4}
 		newItem.MoneyField = 123.456
 		newItem.TextField = "Text"
+		newItem.EnumValue = FieldMappingTestItem.EnumTest.Value2
 		newItem.Save()
 
 		Dim reloaded = table(DirectCast(newItem, IDatabaseObject).DistinctValue)
@@ -138,6 +148,7 @@ Public Class FieldMappingTests
 		Assert.AreEqual(newItem.ImageField.Length, reloaded.ImageField.Length)
 		Assert.AreEqual(newItem.MoneyField, reloaded.MoneyField)
 		Assert.AreEqual(newItem.TextField, reloaded.TextField)
+		Assert.AreEqual(newItem.EnumValue, reloaded.EnumValue)
 
 	End Sub
 
