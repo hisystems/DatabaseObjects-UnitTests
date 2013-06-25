@@ -123,6 +123,7 @@ Public Class SQLSelectTests
 	Public Sub SelectOrderByFieldsIndexerByName()
 
 		Dim selectStatement As New SQLSelect("Table")
+		selectStatement.ConnectionType = Database.ConnectionType.SQLServer
 		selectStatement.OrderBy.Add("Field1")
 
 		Dim field1 = selectStatement.OrderBy("Field1")
@@ -137,6 +138,7 @@ Public Class SQLSelectTests
 
 		Dim condition As New SQLCondition("Field", ComparisonOperator.EqualTo, 1)
 		Dim selectStatement As New SQLSelect("Table", condition)
+		selectStatement.ConnectionType = Database.ConnectionType.SQLServer
 
 		Assert.AreEqual("SELECT * FROM [Table] WHERE [Field] = 1", selectStatement.SQL)
 
