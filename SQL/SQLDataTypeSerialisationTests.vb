@@ -90,6 +90,21 @@ Public Class SQLDataTypeSerialisationTests
 
 	<TestMethod()>
 	<TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
+	<ExpectedException(GetType(InvalidOperationException))>
+	Public Sub MicrosoftAccessDateTimeWithInvalidFractionalSeconds()
+
+		Dim insert As New SQLInsert
+		insert.TableName = "TableWithDates"
+		insert.ConnectionType = Database.ConnectionType.MicrosoftAccess
+		insert.Fields.Add("DateTimeField", New DateTime(1 * TimeSpan.TicksPerMillisecond))
+
+		'Force serialisation
+		Dim sql = insert.SQL
+
+	End Sub
+
+	<TestMethod()>
+	<TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
 	Public Sub DateAndNoTime()
 
 		Dim dateAndTime As New DateTime(2000, 1, 2)
