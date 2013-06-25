@@ -332,4 +332,140 @@ Public Class ItemInstanceTests
 
     End Sub
 
+	''' <summary>
+	''' The ItemInstance will be determined by the override ItemInstance_
+	''' NOT by the generic type argument (TableItem).
+	''' </summary>
+	<Table("Table")>
+	<DistinctField("Field", FieldValueAutoAssignmentType.AutoIncrement)>
+	Private Class GenericTableUsingGenericItemInstanceOverride
+		Inherits Global.DatabaseObjects.Generic.DatabaseObjects(Of TableItem)
+
+		Friend Sub New(database As Database)
+
+			MyBase.New(database)
+
+		End Sub
+
+		Protected Overrides Function ItemInstance_() As TableItem
+
+			Return New TableItemSuperClass(Me)
+
+		End Function
+
+	End Class
+
+	<TestMethod()>
+	<TestCategory("ItemInstance")>
+	Public Sub GenericTableUsingGenericItemInstanceOverrideTest()
+
+		Dim collection As New GenericTableUsingGenericItemInstanceOverride(database)
+
+		Assert.AreEqual(GetType(TableItemSuperClass), DirectCast(collection, IDatabaseObjects).ItemInstance.GetType)
+
+	End Sub
+
+	''' <summary>
+	''' The ItemInstance will be determined by the override ItemInstance
+	''' NOT by the generic type argument (TableItem).
+	''' </summary>
+	<Table("Table")>
+	<DistinctField("Field", FieldValueAutoAssignmentType.AutoIncrement)>
+	Private Class GenericTableUsingNonGenericItemInstanceOverride
+		Inherits Global.DatabaseObjects.Generic.DatabaseObjects(Of TableItem)
+
+		Friend Sub New(database As Database)
+
+			MyBase.New(database)
+
+		End Sub
+
+		Protected Overrides Function ItemInstance() As IDatabaseObject
+
+			Return New TableItemSuperClass(Me)
+
+		End Function
+
+	End Class
+
+	<TestMethod()>
+	<TestCategory("ItemInstance")>
+	Public Sub GenericTableUsingNonGenericItemInstanceOverrideTest()
+
+		Dim collection As New GenericTableUsingNonGenericItemInstanceOverride(database)
+
+		Assert.AreEqual(GetType(TableItemSuperClass), DirectCast(collection, IDatabaseObjects).ItemInstance.GetType)
+
+	End Sub
+
+	''' <summary>
+	''' The ItemInstance will be determined by the override ItemInstance_
+	''' NOT by the generic type argument (TableItem).
+	''' </summary>
+	<Table(SimpleTable.Name)>
+	<DistinctField("Field", FieldValueAutoAssignmentType.AutoIncrement)>
+	Private Class GenericTableVolatileUsingGenericItemInstanceOverride
+		Inherits Global.DatabaseObjects.Generic.DatabaseObjectsVolatile(Of TableItem)
+
+		Friend Sub New(database As Database)
+
+			MyBase.New(database)
+
+		End Sub
+
+		Protected Overrides Function ItemInstance_() As TableItem
+
+			Return New TableItemSuperClass(Me)
+
+		End Function
+
+	End Class
+
+	<TestMethod()>
+	<TestCategory("ItemInstance")>
+	Public Sub GenericTableVolatileUsingGenericItemInstanceOverrideTest()
+
+		database.RecreateTable(SimpleTable.TableSchema)
+
+		Dim collection As New GenericTableVolatileUsingGenericItemInstanceOverride(database)
+
+		Assert.AreEqual(GetType(TableItemSuperClass), DirectCast(collection, IDatabaseObjects).ItemInstance.GetType)
+
+	End Sub
+
+	''' <summary>
+	''' The ItemInstance will be determined by the override ItemInstance_
+	''' NOT by the generic type argument (TableItem).
+	''' </summary>
+	<Table(SimpleTable.Name)>
+	<DistinctField("Field", FieldValueAutoAssignmentType.AutoIncrement)>
+	Private Class GenericTableVolatileUsingNonGenericItemInstanceOverride
+		Inherits Global.DatabaseObjects.Generic.DatabaseObjectsVolatile(Of TableItem)
+
+		Friend Sub New(database As Database)
+
+			MyBase.New(database)
+
+		End Sub
+
+		Protected Overrides Function ItemInstance() As IDatabaseObject
+
+			Return New TableItemSuperClass(Me)
+
+		End Function
+
+	End Class
+
+	<TestMethod()>
+	<TestCategory("ItemInstance")>
+	Public Sub GenericTableVolatileUsingNonGenericItemInstanceOverrideTest()
+
+		database.RecreateTable(SimpleTable.TableSchema)
+
+		Dim collection As New GenericTableVolatileUsingNonGenericItemInstanceOverride(database)
+
+		Assert.AreEqual(GetType(TableItemSuperClass), DirectCast(collection, IDatabaseObjects).ItemInstance.GetType)
+
+	End Sub
+
 End Class
