@@ -2,7 +2,7 @@
 Imports DatabaseObjects.SQL
 Imports DatabaseObjects.UnitTestExtensions
 
-<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase", "MicrosoftAccessTestDatabase", "SQLServerCETestDatabase"})>
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase", "MicrosoftAccessTestDatabase", "SQLServerCETestDatabase", "PervasiveDatabase"})>
 Public Class SQLTableTest
 
 	<DatabaseTestInitialize()>
@@ -29,7 +29,7 @@ Public Class SQLTableTest
 		createTable.Fields.Add("Float", DataType.Float)
 		createTable.Fields.Add("Money", DataType.Money)
 		createTable.Fields.Add("Text", DataType.Text)
-		createTable.Fields.Add("UnicodeVariableCharacter", DataType.UnicodeVariableCharacter, 10)
+		createTable.Fields.Add("UnicodeVariableChar", DataType.UnicodeVariableCharacter, 10)
 		createTable.Fields.Add("Image", DataType.Image)
 
 		Using connection = New ConnectionScope(database)
@@ -46,7 +46,7 @@ Public Class SQLTableTest
 		insert.Fields.Add("Float", 1234567890.123)
 		insert.Fields.Add("Money", 123456789012345)
 		insert.Fields.Add("Text", "ABC")
-		insert.Fields.Add("UnicodeVariableCharacter", "0123456789")
+		insert.Fields.Add("UnicodeVariableChar", "0123456789")
 		insert.Fields.Add("Image", New Byte() {1, 2, 3, 4})
 
 		Using connection = New ConnectionScope(database)

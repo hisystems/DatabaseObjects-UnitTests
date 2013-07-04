@@ -7,7 +7,7 @@ Imports DatabaseObjects.SQL
 Imports DatabaseObjects.Exceptions
 Imports DatabaseObjects.UnitTestExtensions
 
-<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase", "MicrosoftAccessTestDatabase", "SQLServerCETestDatabase"})>
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase", "MicrosoftAccessTestDatabase", "SQLServerCETestDatabase", "PervasiveDatabase"})>
 Public Class FieldMappingTests
 
 	<Table(FieldMappingTestCollection.Name)>
@@ -15,7 +15,7 @@ Public Class FieldMappingTests
 	Private Class FieldMappingTestCollection
 		Inherits Global.DatabaseObjects.Generic.DatabaseObjectsList(Of FieldMappingTestItem)
 
-		Public Const Name As String = "FieldMappingTestCollection"
+		Public Const Name As String = "FieldMappingTestCol"
 
 		Friend Sub New(database As Database)
 
@@ -145,7 +145,7 @@ Public Class FieldMappingTests
 		Assert.AreEqual(newItem.DateTimeField, reloaded.DateTimeField)
 		Assert.AreEqual(newItem.DecimalField, reloaded.DecimalField)
 		Assert.AreEqual(newItem.FloatField, reloaded.FloatField)
-		Assert.AreEqual(newItem.ImageField.Length, reloaded.ImageField.Length)
+		Assert.IsTrue(newItem.ImageField.SequenceEqual(reloaded.ImageField))
 		Assert.AreEqual(newItem.MoneyField, reloaded.MoneyField)
 		Assert.AreEqual(newItem.TextField, reloaded.TextField)
 		Assert.AreEqual(newItem.EnumValue, reloaded.EnumValue)

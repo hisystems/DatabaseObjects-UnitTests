@@ -7,7 +7,7 @@ Imports DatabaseObjects.SQL
 Imports DatabaseObjects.Exceptions
 Imports DatabaseObjects.UnitTestExtensions
 
-<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase"})>
+<DatabaseTestClass(ConnectionStringNames:={"SQLServerTestDatabase", "MySQLTestDatabase", "SQLiteTestDatabase", "PervasiveDatabase"})>
 Public Class DatabaseTestExtensionTesting
 
     Public Property TestContext As TestContext
@@ -48,7 +48,7 @@ Public Class DatabaseTestExtensionTesting
         TestContext.WriteLine("TestCleanup")
 
         'Should be executed 3 times - once for each database
-        Assert.AreEqual(3, TestMethodExecutionCount)
+        Assert.AreEqual(4, TestMethodExecutionCount)
 
     End Sub
 
