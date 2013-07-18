@@ -25,7 +25,35 @@ Public Class SQLDataTypeSerialisationTests
 			connection.Execute(createTable)
 		End Using
 
-	End Sub
+        database.DropTableIfExists("TableWithStrings")
+
+        Dim stringsTable As New SQLCreateTable
+        stringsTable.Name = "TableWithStrings"
+        stringsTable.Fields.Add("StringField", DataType.VariableCharacter, 100)
+
+        Using connection = New ConnectionScope(database)
+            connection.Execute(stringsTable)
+        End Using
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
+    Public Sub EscapeSingleQuote(ByVal database As Database)
+
+        Dim stringWithSingleQuotes As String = "'A'B'"
+
+        Dim insert As New SQLInsert
+        insert.ConnectionType = database.Connection.Type
+        insert.TableName = "TableWithStrings"
+        insert.Fields.Add("StringField", stringWithSingleQuotes)
+
+        Using connection = New ConnectionScope(database)
+            connection.Execute(insert)
+            Assert.AreEqual(stringWithSingleQuotes, connection.ExecuteScalar(New SQLSelect("TableWithStrings")))
+        End Using
+
+    End Sub
 
 	<TestMethod()>
 	<TestCategory("SQL"), TestCategory("DataTypeSerialisation")>
