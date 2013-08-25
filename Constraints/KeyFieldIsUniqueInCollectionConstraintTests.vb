@@ -61,6 +61,19 @@ Public Class KeyFieldIsUniqueInCollectionConstraintTests
 
     <TestMethod()>
     <TestCategory("Constraint")>
+    Public Sub KeyFieldIsUniqueInCollectionConstraintForSavedObject()
+
+        Dim newItem = table.Add
+        newItem.Field1 = "Field1-4"
+        newItem.Save()
+        Dim keyIsUniqueInCollectionConstraint As Constraints.IConstraint(Of String) = New Constraints.KeyFieldIsUniqueInCollectionConstraint(Of String)(newItem)
+
+        Assert.IsTrue(keyIsUniqueInCollectionConstraint.ValueSatisfiesConstraint("Field1-4"))
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Constraint")>
     Public Sub KeyFieldIsNotUniqueInCollectionConstraintForNewObject()
 
         Dim newItem = table.Add
