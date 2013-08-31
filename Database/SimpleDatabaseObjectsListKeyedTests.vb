@@ -149,4 +149,14 @@ Public Class SimpleDatabaseObjectsListKeyedTests
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("DatabaseObjectsCollections")>
+    Public Sub EnumerateCollection()
+
+        For Each item In _collection
+            Dim field1Value = item.Field1
+        Next
+
+    End Sub
+
 End Class
