@@ -97,6 +97,17 @@ Public Class ConstraintTests
 
     <TestMethod()>
     <TestCategory("Constraint")>
+    Public Sub ConstraintBindingErrorMessageCallback()
+
+        Dim constraint As New TestTrueConstraint
+        Dim constraintBinding As New Constraints.ConstraintBinding(Of Boolean)(Function() False, constraint, Function(value) "Value '" & value & "' is invalid")
+
+        Assert.AreEqual("Value 'False' is invalid", constraintBinding.ErrorMessage())
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Constraint")>
     Public Sub RegExConstraint()
 
         Dim constraint As New Constraints.RegExConstraint("[a-c]{3}")
