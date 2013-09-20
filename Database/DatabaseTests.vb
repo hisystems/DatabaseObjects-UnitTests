@@ -100,6 +100,8 @@ Public Class DatabaseTests
 
         database.ObjectSave(table, newObject)
 
+        Assert.IsNotNull(DirectCast(newObject, IDatabaseObject).DistinctValue)
+
     End Sub
 
     <TestMethod()>
