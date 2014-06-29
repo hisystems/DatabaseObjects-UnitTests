@@ -196,7 +196,8 @@ Public Class DatabaseTests
     Public Sub ObjectsSearch(database As Database)
 
         Dim conditions As New SQLConditions()
-        conditions.Add("Field1", ComparisonOperator.EqualTo, "Field1-1")
+        ' Search value case is intentionally lower case to test for case-insensitive searching.
+        conditions.Add("Field1", ComparisonOperator.EqualTo, "field1-1")
 
         Dim items = database.ObjectsSearch(table, conditions)
 
