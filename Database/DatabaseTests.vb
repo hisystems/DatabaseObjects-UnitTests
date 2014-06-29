@@ -173,6 +173,16 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
+    Public Sub ObjectsListMaxRecords(database As Database)
+
+        Dim items = database.ObjectsList(table, maxRecords:=2)
+
+        Assert.AreEqual(items.Count, 2)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
     Public Sub ObjectsList(database As Database)
 
         Dim items = database.ObjectsList(table)
