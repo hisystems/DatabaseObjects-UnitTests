@@ -268,4 +268,16 @@ Public Class SQLExpressionTests
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("SQL"), TestCategory("SQLExpression")>
+    Public Sub SQLUpdateWithExpression()
+
+        Dim update = New SQLUpdate()
+        update.TableName = "Table"
+        update.Fields.Add("Field1", New SQLFieldExpression("Field2") + 1)
+
+        Assert.AreEqual("UPDATE [Table] SET [Field1] = ([Field2] + 1)", update.SQL)
+
+    End Sub
+
 End Class
