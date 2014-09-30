@@ -117,6 +117,18 @@ Public Class DatabaseTests
 
     <TestMethod()>
     <TestCategory("Database")>
+    <ExpectedException(GetType(RecordDoesNotExistException))>
+    Public Sub ObjectSaveDeleted(database As Database)
+
+        Dim existingObject = table("Field1-1")
+        Dim existingObjectCopy = table("Field1-1")
+        database.ObjectDelete(table, existingObject)
+        database.ObjectSave(table, existingObjectCopy)
+
+    End Sub
+
+    <TestMethod()>
+    <TestCategory("Database")>
     Public Sub ObjectByKeyIfExists(database As Database)
 
         Assert.AreNotSame(database.ObjectByKeyIfExists(table, "Field1-1"), Nothing)
