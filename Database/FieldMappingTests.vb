@@ -104,6 +104,49 @@ Public Class FieldMappingTests
 
 	End Class
 
+	Private Class NullableFieldMappingTestItem
+		Inherits DatabaseObject
+
+		Public Enum EnumTest
+			Value1 = 1
+			Value2 = 2
+		End Enum
+
+		<FieldMapping("Boolean")>
+		Public NullableBooleanField As Boolean?
+
+		<FieldMapping("Character")>
+		Public NullableCharacterField As Char?
+
+		<FieldMapping("DateTime")>
+		Public NullableDateTimeField As DateTime?
+
+		<FieldMapping("Decimal")>
+		Public NullableDecimalField As Decimal?
+
+		<FieldMapping("Float")>
+		Public NullableFloatField As Double?
+
+		<FieldMapping("Money")>
+		Public NullableMoneyField As Decimal?
+
+		<FieldMapping("EnumValue")>
+		Public NullableEnumValue As EnumTest?
+
+		Friend Sub New(parent As FieldMappingTestCollection)
+
+			MyBase.New(parent)
+
+		End Sub
+
+		Public Shadows Sub Save()
+
+			MyBase.Save()
+
+		End Sub
+
+	End Class
+
 	Public Property TestContext As TestContext
 
 	<DatabaseTestInitialize()>
@@ -149,6 +192,33 @@ Public Class FieldMappingTests
 		Assert.AreEqual(newItem.MoneyField, reloaded.MoneyField)
 		Assert.AreEqual(newItem.TextField, reloaded.TextField)
 		Assert.AreEqual(newItem.EnumValue, reloaded.EnumValue)
+
+	End Sub
+
+	<TestMethod()>
+	<TestCategory("Database")>
+	Public Sub NullableFieldMappingAllNullableDataTypes(database As Database)
+
+		Dim table = New FieldMappingTestCollection(database)
+		Dim newItem As New NullableFieldMappingTestItem(table)
+
+		newItem.NullableBooleanField = Nothing
+		newItem.NullableDateTimeField = Nothing
+		newItem.NullableDecimalField = Nothing
+		newItem.NullableFloatField = Nothing
+		newItem.NullableMoneyField = Nothing
+		newItem.NullableEnumValue = Nothing
+		newItem.Save()
+
+		Dim reloaded = table(DirectCast(newItem, IDatabaseObject).DistinctValue)
+
+		Assert.AreEqual(newItem.NullableBooleanField, Nothing)
+		Assert.AreEqual(newItem.NullableCharacterField, Nothing)
+		Assert.AreEqual(newItem.NullableDateTimeField, Nothing)
+		Assert.AreEqual(newItem.NullableDecimalField, Nothing)
+		Assert.AreEqual(newItem.NullableFloatField, Nothing)
+		Assert.AreEqual(newItem.NullableMoneyField, Nothing)
+		Assert.AreEqual(newItem.NullableEnumValue, Nothing)
 
 	End Sub
 
