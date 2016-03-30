@@ -159,6 +159,10 @@
       <Project>{AED07292-4615-462F-9036-66522E4A54D4}</Project>
       <Name>DatabaseObjects.UnitTestExtensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatabaseObjects\DatabaseObjects 3.5.csproj">
+      <Project>{37B4AD91-68B0-4469-BF11-FD716569E962}</Project>
+      <Name>DatabaseObjects 3.5</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatabaseObjects\DatabaseObjects.csproj">
       <Project>{5A77FD9E-F9DD-44D6-BE59-2A45C1D6B6BC}</Project>
       <Name>DatabaseObjects</Name>
